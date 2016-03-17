@@ -180,8 +180,7 @@ soma([],0).
 soma([H | T], G) :- soma(T,G2) , G is (H+G2).
 
 % Calcula a média de idades -- Auxiliar
-mediaIdades([],0).
-mediaIdades([Id | T], Media) :-  soma([Id | T],soma) , comprimento([Id | T],CompLista) , Media is (soma/compLista).
+mediaIdades([Id | T], Media) :-  comprimento([Id | T],Len) , soma([Id | T],Sum) , Media is Sum / Len.
 
 % Calcula a média de idades
 media(M) :- findall(ID, utente(N, ID, M, S, P, I), U) , mediaIdades(U, M).
@@ -241,13 +240,25 @@ novo(P,Idade) :- findall(ID, utente(N, ID, M, S, P, I), U) , minIdade(U,Idade).
 novo(S,Idade) :- findall(ID, utente(N, ID, M, S, P, I), U) , minIdade(U,Idade).
 
 % Calcula o máximo de uma lista de idades
-maxIdade([H | T], MAX) :- maxIdade(T,MAX)  MAX >= H.
-maxIdade([H | T], H) :- maxIdade(T,MAX) H > MAX.
+maxIdade([X],X).
+maxIdade([X|Y],R) :-
+ maxIdade(Y,RES), maior(X,RES,R).
+
 
 % Calcula o minimo de uma lista de idades
-minIdade([H | T], MIN) :- maxIdade(T,MIN)  MIN < H.
-minIdade([H | T], H) :- maxIdade(T,MIN) H >= MIN.
+minIdade([X],X).
+minIdade([X|Y],R) :-
+ minIdade(Y,RES), menor(X,RES,R).
 
+% Calcula o maior elemento entre dois elementos
+maior(X,Y,X) :-
+ X>Y.
+maior(X,Y,Y) :-
+ Y>=X.
+
+% Calcula o menor elemento entre dois elementos
+menor(X,Y,X) :- X<Y.
+menor(X,Y,Y) :- Y=<X.
 
 % Invariantes para Utentes --------------------------------------------------------------------------------------------------------
 
