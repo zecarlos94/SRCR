@@ -244,7 +244,7 @@ utentes_servico(S, I, R) :- findall(U, ficha_utente(U, S, P, I), R).
 % Identificar as instituições onde seja prestado um serviço
 instituicoes_servico(S, I) :- findall(N, servico(S, N), I).
 
-% Identificar as instituições onde seja prestado um conjunto de serviços (REVER)
+% Identificar as instituições onde seja prestado um conjunto de serviços
 instituicoes_servicos([], []).
 instituicoes_servicos([S | T], I) :- findall(N, servico(S, N), Li), instituicoes_servicos(T, Lt), concatenar(Li, Lt, I).
 
@@ -282,12 +282,6 @@ utentes_profissional(P, R) :- findall(U, ficha_utente(U, S, P, I), Raux), tira_r
 
 % Determinar a lista de utentes de um profissional por localidade
 utentes_localidade_profissional(L, P, R) :- findall(U, registo_utente(U, I, L), X1), utentes_profissional(P, X2), repetidos(X1, X2, R).
-
-% Determinar a lista de utentes de um servico por localidade
-utentes_localidade_servico(L, S, R) :- findall(U, registo_utente(U, I, L), X1), utentes_servico(S, X2), repetidos(X1, X2, R).
-
-% Determina a lista de utentes por idade
-utentes_idade(I, U) :- findall(U, registo_utente(U, I, L), U).
 
 % De entre os utentes registados, determina o que tem maior idade
 mais_idoso(J) :- findall((U, I), registo_utente(U, I, L), R), maxIdade(R, J).
@@ -334,9 +328,6 @@ profissionalMaisUtentes(S) :- listaProfissionais(Ls), nUtentesProf(Ls, R), maxUt
 % Só pode inserir uma ficha de utente se este estiver registado na base de conhecimento
 +ficha_utente(U, S, P, I) :: (findall(U, registo_utente(U, I, L), R), length(R, T), T == 1). 
 
-% Para se remover um registo de utente, é preciso que este exista na base de conhecimento
--registo_utente(U, I, L) :: (findall((U, I, L), registo_utente(U, I, L), R), length(R, T), T == 0).
-
 % Para se remover um registo de utente, não podem existir fichas a ele associadas
 -registo_utente(U, Idade, L) :: (findall(U, ficha_utente(U, S, P, Inst), R), length(R, T), T == 0).
 
@@ -351,9 +342,6 @@ profissionalMaisUtentes(S) :- listaProfissionais(Ls), nUtentesProf(Ls, R), maxUt
 
 % Só pode inserir um serviço numa instituição se esta existir
 +servico(S, I) :: (findall(I, instituicao(I), L), length(L, R), R == 1).
-
-% Para se remover um serviço, é preciso que este exista na base de conhecimento
--servico(S, I) :: (findall((S, I), servico(S, I), L), length(L, R), R == 0).
 
 % Só pode remover um servico se não tiver utentes associados ao mesmo e na mesma instituição
 -servico(S, I) :: (findall((U, S, I), ficha_utente(U, S, P, I), L), length(L, R), R == 0).
@@ -373,9 +361,6 @@ profissionalMaisUtentes(S) :- listaProfissionais(Ls), nUtentesProf(Ls, R), maxUt
 % Só pode inserir um profissional de um determinado serviço numa instituição se esse serviço existir na mesma
 +profissional(P, S, I) :: (findall((S, I), servico(S, I), L), length(L, R), R == 1).
 
-% Para se remover um profissional, é preciso que este exista na base de conhecimento
--profissional(P, S, I) :: (findall((P, S, I), profissional(P, S, I), L), length(L, R), R == 0).
-
 % Só pode remover um profissional se este não tiver utentes associados
 -profissional(P, S, I) :: (findall((U, S, P, I), ficha_utente(U, S, P, I), L), length(L, R), R == 0).
 
@@ -384,9 +369,6 @@ profissionalMaisUtentes(S) :- listaProfissionais(Ls), nUtentesProf(Ls, R), maxUt
 
 % Não podem existir instituições repetidas
 +instituicao(I) :: (findall(I, instituicao(I), L), length(L, R), R == 1).
-
-% Para se remover uma instituição, é preciso que esta exista na base de conhecimento
--instituicao(I) :: (findall(I, instituicao(I), L), length(L, R), R == 0).
 
 % Para se remover uma instituição, não podem existir utentes associados à mesma
 -instituicao(I) :: (utentes_instituicao(I, U) , length(U, L), L == 0).
