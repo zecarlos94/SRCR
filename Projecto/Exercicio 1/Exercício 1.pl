@@ -15,7 +15,6 @@
 % inserir: Questão -> {V, F}
 % retirar: Questão -> {V, F}
 % testar: Lista -> {V, F}
-% comprimento: Lista, Tamanho -> {V, F}
 % soma: Lista, Soma -> {V, F}
 % media: Lista, Média -> {V, F}
 % maior: (X, Y), (A, B), Resultado -> {V, F}
@@ -157,16 +156,12 @@ retirar(T) :- assert(T), !, fail.
 testar([]).
 testar([I | L]) :- I, testar(L).
 
-% Calcula comprimento de uma lista
-comprimento([], 0).
-comprimento([H | T], C1) :- comprimento(T, C2) , C1 is 1+C2.
-
 % Calcula a soma de todos os valores de uma lista
 soma([], 0).
 soma([H | T], S1) :- soma(T, S2) , S1 is H+S2.
 
 % Calcula a média de idades
-media(I, R) :- soma(I, S), comprimento(I, L), R is S/L.
+media(I, R) :- soma(I, S), length(I, L), R is S/L.
 
 % De entre dois utentes, determina aquele que tem menor idade
 menor((A, Ia), (B, Ib), (A, Ia)) :- Ia < Ib.
@@ -197,15 +192,15 @@ listaUtentes(R) :- findall((U, I), registo_utente(U, I, L), R).
 
 % Devolve um tuplo com o nome da instituição e o número de utentes da mesma
 nUtentesInst([], []).
-nUtentesInst([I | T], [(I, Nu) | R]) :- utentes_instituicao(I, U), comprimento(U, Nu), nUtentesInst(T, R).
+nUtentesInst([I | T], [(I, Nu) | R]) :- utentes_instituicao(I, U), length(U, Nu), nUtentesInst(T, R).
 
 % Devolve um tuplo com o nome do serviço e o número de utentes do mesmo
 nUtentesServ([], []).
-nUtentesServ([S | T], [(S, Nu) | R]) :- utentes_servico(S, U), comprimento(U, Nu), nUtentesServ(T, R).
+nUtentesServ([S | T], [(S, Nu) | R]) :- utentes_servico(S, U), length(U, Nu), nUtentesServ(T, R).
 
 % Devolve um tuplo com o nome do profissional e o número de utentes do mesmo
 nUtentesProf([], []).
-nUtentesProf([P | T], [(P, Nu) | R]) :- utentes_profissional(P, U), comprimento(U, Nu), nUtentesProf(T, R).
+nUtentesProf([P | T], [(P, Nu) | R]) :- utentes_profissional(P, U), length(U, Nu), nUtentesProf(T, R).
 
 % Determina a instituição, o serviço ou o profissional com mais utentes
 maxUtentes([H], H).
