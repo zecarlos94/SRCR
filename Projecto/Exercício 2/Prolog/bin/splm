@@ -1,0 +1,174 @@
+#! /bin/sh
+# **NOTE** /bin/sh may not be POSIX-compliant (Solaris). Beware!
+# **NOTE**: InstallSICStus.in needs to know all AC_SUBST variables in this file
+# AC_SUBST variables:
+#   SP_RTSYS_DIRNAME
+#   SP_LIBRARY_DIR
+#   SP_DIRNAME
+#   LICENSE_PRODUCT
+
+
+# Usage, see end of file
+
+# Barf on error
+set -e
+
+# Ensure sane locale
+LC_ALL=C
+export LC_ALL
+
+# empty means use default locations
+license_file=''
+# something like sicstus4.2_x86_64-darwin-9.8.0
+default_license_product='sicstus4.3_darwin'
+
+# >= 0 means stop processing and show usage.
+usage=-1
+
+
+if test "$#" -lt 1; then
+  echo 'Too few arguments.' 1>&2
+  usage=1
+elif test "$1" = '-h' || test "$1" = '-help' || test "$1" = '--help'; then
+  usage=0
+fi
+
+if test $usage -lt 0; then
+  if test "$1" = '--version'; then
+      shift
+      echo 'splm (SICStus Prolog @SICSTUS_VERSION_STRING@)'
+      exit 0
+    fi
+fi
+
+
+if test $usage -lt 0; then
+  if test "$1" = '-l' || test "$1" = '--license-file'; then
+    if test "$#" -lt 2; then
+      echo 'Too few arguments.' 1>&2
+      usage=1
+    else
+      shift
+      license_file="$1"
+      shift
+    fi
+  else # No explicit license file, need to figure out its location
+
+    # Figure out the location of the running script. From configure ("the
+    # Free Software Foundation gives unlimited permission to copy,
+    # distribute and modify it.")
+    #######
+    # Find who we are.  Look in the path if we contain no directory separator.
+    as_myself=
+    case $0 in #((
+      *[\\/]* ) as_myself=$0 ;;
+      *) as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+    for as_dir in $PATH
+    do
+      IFS=$as_save_IFS
+      test -z "$as_dir" && as_dir=.
+      test -r "$as_dir/$0" && as_myself=$as_dir/$0 && break
+      done
+    IFS=$as_save_IFS
+
+         ;;
+    esac
+    # We did not find ourselves, most probably we were run as `sh COMMAND'
+    # in which case we are not to be found in the path.
+    if test "x$as_myself" = x; then
+      as_myself=$0
+    fi
+    if test ! -f "$as_myself"; then
+      echo "Cannot find myself; rerun with an absolute file name" >&2
+      exit 1
+    fi
+    #######
+
+    # remove shortest suffix matching /*, i.e. dirname
+
+    # Solaris sh is not POSIX, cannot: tmp="${as_myself%/*}"
+    tmp=`dirname "$as_myself"`
+    if test "$tmp" = "$as_myself"; then
+      my_dir='./'
+    else
+      my_dir="$tmp/"
+    fi
+    if test ! -d "$my_dir"; then
+      echo "Cannot find folder containing myself; rerun with an absolute file name" >&2
+      exit 1
+    fi
+    license_file="$my_dir"'sp-4.3.0/sicstus-4.3.0/library/license.pl'
+  fi
+fi # usage < 0
+
+if test $usage -lt 0; then
+
+  if test -z "${license_file}"; then
+     license_file='/Users/zecarlos/lib/sicstus-4.3.0/library/license.pl'
+  fi
+  # remove shortest suffix matching /*, i.e. dirname
+  # Solaris sh is not POSIX, cannot: licence_dir="${license_file%/*}/"
+  licence_dir=`dirname "$license_file"`
+
+  if test ! -d "$licence_dir"; then
+    echo "Cannot find license folder ($licence_dir)" 1>&2
+    exit 1
+  fi
+fi # usage < 0
+
+if test $usage -lt 0; then
+  if test "$1" = '-s'; then
+      if test "$#" -lt 3; then
+          echo 'Too few arguments.' 1>&2
+          usage=1
+      else
+          shift
+          rm -f "$license_file"
+          echo '% Warning!' > "$license_file"
+          echo '% Transferring this file to third parties is an act of software piracy.' >> "$license_file"
+          echo >> "$license_file"
+          echo "site('$1')." >> "$license_file"
+          echo "product('$default_license_product', '${3:-permanent}', '$2')." >> "$license_file"
+          chmod a+r "$license_file"
+      fi
+  elif test "$1" = '-i'; then
+      if test "$#" -lt 2; then
+          echo 'Too few arguments.' 1>&2
+          usage=1
+      else
+          shift
+          rm -f "$license_file"
+          echo '% Warning!' > "$license_file"
+          echo '% Transferring this file to third parties is an act of software piracy.' >> "$license_file"
+          echo ' ' >> "$license_file"
+          echo 'site('\'$*\'').' >> "$license_file"
+          chmod a+r "$license_file"
+      fi
+  elif test "$1" = '-a'; then
+      if test "$#" -lt 4; then
+          echo 'Too few arguments.' 1>&2
+          usage=1
+      else
+          echo 'product('\'$2\',\'$3\',\'$4\'').' >> "$license_file"
+      fi
+  elif test "$1" = '-p'; then
+      cat "$license_file"
+  else
+      echo 'Invalid arguments.' 1>&2
+      usage=1
+  fi
+fi # usage < 0
+
+
+if test $usage -ge 0; then
+    echo 1>&2
+    echo 'Usage:' 1>&2
+    echo '       splm [ -l <License File> ] -s <Site> <Code> [ <Expiration Date> ]' 1>&2
+    echo '       splm [ -l <License File> ] -i <Site>' 1>&2
+    echo '       splm [ -l <License File> ] -a <Product> <Expiration Date> <Code>' 1>&2
+    echo '       splm [ -l <License File> ] -p' 1>&2
+    echo '       splm --version' 1>&2
+    exit $usage
+fi
+
+exit 0

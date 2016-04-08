@@ -1,0 +1,130 @@
+# spld.config.in: processed by Utils/Makefile to produce spld.config
+
+DEF_PREFIX=/Users/zecarlos
+SP_DIRNAME=sicstus-4.3.0
+
+# A run-time system foo.exe in directory DIR expects the sicstus
+# specific files to be found in sub directory DIR/SP_RTSYS_DIRNAME
+# Traditionally this was DIR/lib but on Win32 and MacOS X version
+# specific names are used. Changing this only makes sense on SysV
+# when spld --moveable is used.
+SP_RTSYS_DIRNAME=sp-4.3.0
+
+# Keep this list sorted.
+BDBLIB=-L/usr/local/BerkeleyDB.6.0/lib -ldb-6.0
+BDB_PATH=/usr/local/BerkeleyDB.6.0
+CC=cc
+CC_NOLIBPATH=
+CFLAGS=  -g -O2 -pipe -D_APPLE_C_SOURCE  -m64 -fno-common -dynamic
+# [PM] 4.0.2+ always empty, can override with --conf EXTRA_CFLAGS="..."
+EXTRA_CFLAGS=
+CHARMAINOBJ=charmain.o intrpt.o 
+SPAUXOBJ=spaux.o
+CHMOD=chmod
+CP=cp
+CYGPATH=echo
+DSMAINOBJ=main.o
+ENABLE_STATLIB=yes
+EXEEXT=
+HAVE_SYSV_ORIGIN=no
+FLI_FILE=fli_dl.c
+EXPFILE_SYMBOL_PREFIX=
+IMPLIB=
+INCR_CFLAGS=
+JAVAC=/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home/bin/javac
+JAVAEXEC=/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home/bin/java
+JAVAH=/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home/bin/javah
+JAVALIB=-L/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home/jre/lib/server -ljvm
+JAVA_CLASSPATH=
+JAVA_EXECOPTS= -d64
+JDK_PATH=/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home
+JDK_RPATH=
+JASPER_MODULE=jasper.po
+TCL_LIBRARY=
+TK_LIBRARY=
+TCLTK_MODULE=tcltk.po
+TCLTK_PATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks
+TCL_PATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks
+TK_PATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks
+LD=ld
+SPLD_EXE_LDFLAGS=
+SPLD_EXE_LIBS=-framework CoreFoundation
+SPLD_EXE_EXTRA_RPATH=
+SPLD_JNI_LIBS=
+SPLFR_SHLD_LASTARG=
+SPLD_OPT_WRAPPER_DEFAULT=no
+SPLD_OPT_MOVEABLE_DEFAULT=yes
+SPLD_OPT_MOVEABLE_NEEDS_WRAPPER=no
+SPLD_OPT_USE_LOCALE_DEFAULT=yes
+SPLD_OPT_LOCALE_NAME_DEFAULT=
+# SPRM 7579
+SPLD_OPT_MORE_MEMORY_NEEDS_LC_ALL_C=yes
+LD_R=ld -r
+CC_ROPT=
+SPLD_SHLD_JNILIB_FLAGS=
+SPLD_SHLD_ROPT=
+# [PM] 4.0 yes or no (Win32 embed VS 2005 manifest)
+SPLD_EMBED_MANIFEST=
+# [PM] 4.0 yes or no (Win32 embed VS 2005 manifest)
+SPLFR_EMBED_MANIFEST=
+SPLFR_SHLD_ROPT=
+# [PM] 4.0.2+
+SPLIT_OPT_CFLAG=1
+LD_LIBRARY_PATH_name=DYLD_LIBRARY_PATH
+LD_BUILDS_RPATH_FROM_L=no
+SPLFR_LD_r_FLAGS=-d
+LN=ln -s
+M4=m4
+MV=mv
+# [PM] 4.0 Visual Studio 8 Manifest Tool mt.exe
+MT=mt.exe
+NMEDIT=
+NOLINK_OPT=-c
+NOLINK_OUTPUT_OPT=-o 
+SHLD_OUTPUT_OPT=-o 
+OBJEXT=o
+OUTPUT_OPT=-o 
+PATHSEP=:
+PERL=/usr/bin/perl
+PLFLAGS=compactcode
+QUOTECHAR="
+RANLIB=ranlib
+RESGEN_TYPE=cc
+RM=rm
+RTKERNEL_BASENAME_SANS_SUFFIX=libsprt4-3-0
+RTKERNEL_BASENAME_WITH_DSO_SUFFIX=libsprt4-3-0.dylib
+RTKERNEL_BASENAME_WITH_STAT_SUFFIX=libsprt4-3-0.a
+SPLFR_SHLD=cc
+SPLFR_SHLDFLAGS=-bundle -undefined error  -m64
+# 3.9.1
+SPLFR_SHLD_EXPORT_ARG=-Wl,-exported_symbol,_@SP_MAIN_NAME@
+SPLFR_LD_EXPORT_ARG=-exported_symbol _@SP_MAIN_NAME@
+# 3.9.1
+SPLFR_SHLD_POST_PROCESS=
+SPLFR_SHLD_POST_PROCESS_EXPFILE_OPT=
+SPLFR_SHLD_POST_PROCESS_LIB_OPT=
+# 3.9.1
+SPLFR_LD_R_POST_PROCESS=
+SPLFR_LD_R_POST_PROCESS_EXPFILE_OPT=
+SPLFR_LD_R_POST_PROCESS_LIB_OPT=
+#
+SHSFX=dylib
+FLI_SHSFX=bundle
+# resource compiler used by spld to compile data resources on Win32
+RCEXE=rc
+SICSTUS_MAJOR_VERSION=4
+SICSTUS_MINOR_VERSION=3
+SICSTUS_REVISION_VERSION=0
+SICSTUS_BETA_VERSION=0
+SICSTUS_VERSION_STRING=4.3.0
+SOCKETLIB=
+STSFX=s.o
+SYSTEMLIB=
+TCLLIB= -framework Tcl -framework Tk 
+WIN32_EXTRAOBJS=
+WIN32_SPLD_SHLD_SPECIAL=
+WIN32_SPLD_CC_SPECIAL=
+WIN32_EMBED_MANIFESTS=
+WINMAINOBJ=
+VERBOSE_FLAG=-v
+NOVERBOSE_FLAG=
