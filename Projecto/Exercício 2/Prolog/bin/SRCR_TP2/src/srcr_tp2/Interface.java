@@ -16,6 +16,7 @@ import se.sics.jasper.SPPredicate;
 import se.sics.jasper.SPQuery;
 import se.sics.jasper.SPTerm;
 import java.util.StringTokenizer;
+import se.sics.jasper.SPCanonicalAtom;
 /**
  *
  * @author zecarlos
@@ -51,11 +52,11 @@ public class Interface extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
         jButton2 = new javax.swing.JButton();
         jTextField2 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         jRadioButton1.setText("jRadioButton1");
 
@@ -78,8 +79,6 @@ public class Interface extends javax.swing.JFrame {
 
         jLabel2.setText("Resposta(s) á(s) questão(ões) colocada(s)");
 
-        jScrollPane1.setViewportView(jList1);
-
         jButton2.setText("Enviar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -95,6 +94,10 @@ public class Interface extends javax.swing.JFrame {
 
         jLabel3.setText("Introduza o nome do ficheiro .pl");
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane2.setViewportView(jTextArea1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -107,7 +110,7 @@ public class Interface extends javax.swing.JFrame {
                         .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
+                            .addComponent(jScrollPane2)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jButton2))
@@ -131,11 +134,11 @@ public class Interface extends javax.swing.JFrame {
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
-                .addGap(18, 18, 18)
+                .addGap(4, 4, 4)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1))
         );
 
@@ -148,10 +151,10 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        jScrollPane1.setViewportView(jList1);
-        listModel.clear();
+        jTextArea1.setText("");
         String argv[]=null;
         String predicadoArgs[]=new String[1000];
+        String name=" ";
         int i=0,j;
         try{
             sp = new SICStus(argv,null);
@@ -163,23 +166,23 @@ public class Interface extends javax.swing.JFrame {
 	    StringTokenizer st = new StringTokenizer(predicado,"(,).");
 
 	    while (st.hasMoreElements()) {
-		predicadoArgs[i]=(String)st.nextElement();
+                if(i==0) name=st.nextToken(); 
+		predicadoArgs[i]=st.nextToken();
                 i++;
             }
-            
             //for(j=0;j<i;j++) System.out.println(predicadoArgs[j]);
-            
+            //System.out.println(name);
             //pred = new SPPredicate(sp, "voa", 1, "");
-            pred = new SPPredicate(sp,(String) predicadoArgs[0], 1, "");
+            pred = new SPPredicate(sp,name, 1, "");
             way = new SPTerm(sp).putVariable();
 
             queryRead = sp.openQuery(pred, new SPTerm[] { way });
     
             while (queryRead.nextSolution()){
-                listModel.addElement(way.toString());
+                //System.out.println(way.toString());
+                jTextArea1.append(way.toString() + " \n");
             }
             
-            jList1 = new JList(listModel);
             jTextField1.setText("Fim da Query pretendida");
         }
         catch ( Exception e ){
@@ -204,9 +207,9 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
