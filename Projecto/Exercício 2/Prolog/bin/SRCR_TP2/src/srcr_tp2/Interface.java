@@ -173,7 +173,7 @@ public class Interface extends javax.swing.JFrame {
             //for(j=0;j<i;j++) System.out.println(predicadoArgs[j]);
             //System.out.println(name);
             //pred = new SPPredicate(sp, "voa", 1, "");
-            pred = new SPPredicate(sp,name, 1, "");
+            pred = new SPPredicate(sp,name, i , "");
             way = new SPTerm(sp).putVariable();
 
             queryRead = sp.openQuery(pred, new SPTerm[] { way });
