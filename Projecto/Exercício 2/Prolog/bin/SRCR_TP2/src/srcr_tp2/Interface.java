@@ -6,18 +6,30 @@
 package srcr_tp2;
 
 import static java.lang.System.exit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import se.sics.jasper.SICStus;
+import se.sics.jasper.SPException;
+import se.sics.jasper.SPPredicate;
+import se.sics.jasper.SPQuery;
+import se.sics.jasper.SPTerm;
 
 /**
  *
  * @author zecarlos
  */
 public class Interface extends javax.swing.JFrame {
-    TesteJasper prolog;
+    
+    SICStus sp;
+    SPPredicate pred;
+    SPTerm way;
+    SPQuery queryRead;
+    int i;
+    
     /**
      * Creates new form Interface
      */
-    public Interface(TesteJasper prolog) {
-        this.prolog=prolog;
+    public Interface() {
         initComponents();
     }
 
@@ -119,8 +131,29 @@ public class Interface extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         jScrollPane1.setViewportView(jList1);
-        prolog.queryProlog();
         
+        String argv[]=null;
+        try 
+    {
+      sp = new SICStus(argv,null);
+
+      sp.load("exercicio2.pl");
+    
+      pred = new SPPredicate(sp, "voa", 1, "");
+      way = new SPTerm(sp).putVariable();
+
+      queryRead = sp.openQuery(pred, new SPTerm[] { way });
+    
+      while (queryRead.nextSolution())
+        {
+          System.out.println(way.toString());
+        }
+      System.out.println("Fim da Query pretendida");
+    }
+  catch ( Exception e )
+    {
+      e.printStackTrace();
+    }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     

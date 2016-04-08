@@ -16,8 +16,7 @@ public class SRCR_TP2 {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        TesteJasper prolog = new TesteJasper();
-        Interface i = new Interface(prolog);
+        Interface i = new Interface();
         i.setVisible(true);
     }
     
