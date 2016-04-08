@@ -156,10 +156,16 @@ public class Interface extends javax.swing.JFrame {
         String predicadoArgs[]=new String[1000];
         String name=" ";
         int i=0,j;
+       
         try{
             sp = new SICStus(argv,null);
-            this.ficheiro = jTextField2.getText();
-            sp.load(ficheiro);
+            if(jTextField2.getText().equals("")){ 
+                this.ficheiro = "exercicio2.pl" ;
+                jTextField2.setText("exercicio2.pl");
+            }
+            else { this.ficheiro = jTextField2.getText(); }
+            
+            sp.load(this.ficheiro);
             this.predicado = jTextField1.getText();
 
             //String predicado = "predicado(a,b,c,d).";
@@ -170,20 +176,34 @@ public class Interface extends javax.swing.JFrame {
 		predicadoArgs[i]=st.nextToken();
                 i++;
             }
-            //for(j=0;j<i;j++) System.out.println(predicadoArgs[j]);
-            //System.out.println(name);
-            //pred = new SPPredicate(sp, "voa", 1, "");
+            System.out.println("Name of predicate: "+name);
+            System.out.println("Number of arguments: "+i);
+            
+            SPTerm[] read = new SPTerm[i];
+            System.out.println("Size of  SPTerm[] read: "+read.length);
+             
+            for(j=0;j<i;j++) System.out.println(predicadoArgs[j]);
+            
             pred = new SPPredicate(sp,name, i , "");
             way = new SPTerm(sp).putVariable();
+            System.out.println("Value of SPTerm way: "+way);
 
-            queryRead = sp.openQuery(pred, new SPTerm[] { way });
-    
+            for(j=0;j<i;j++){
+                read[j] = way;
+            }
+                
+            queryRead = sp.openQuery(pred, read);
+             
             while (queryRead.nextSolution()){
-                //System.out.println(way.toString());
+                System.out.println("Valor Resultado Query: "+way.toString());
                 jTextArea1.append(way.toString() + " \n");
             }
-            
+           
             jTextField1.setText("Fim da Query pretendida");
+            for(j=0;j<i;j++){
+                read[j] = null;
+                predicadoArgs[j] = null;
+            }
         }
         catch ( Exception e ){
             e.printStackTrace();
