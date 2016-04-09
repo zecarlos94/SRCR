@@ -176,35 +176,47 @@ public class Interface extends javax.swing.JFrame {
 		predicadoArgs[i]=st.nextToken();
                 i++;
             }
-            System.out.println("Name of predicate: "+name);
-            System.out.println("Number of arguments: "+i);
+            //System.out.println("Name of predicate: "+name);
+            //System.out.println("Number of arguments: "+i);
             
             SPTerm[] read = new SPTerm[i];
-            System.out.println("Size of  SPTerm[] read: "+read.length);
+            //System.out.println("Size of  SPTerm[] read: "+read.length);
              
-            for(j=0;j<i;j++) System.out.println(predicadoArgs[j]);
+            //for(j=0;j<i;j++) System.out.println(predicadoArgs[j]);
             
             pred = new SPPredicate(sp,name, i , "");
             way = new SPTerm(sp).putVariable();
-            System.out.println("Value of SPTerm way: "+way);
+            //System.out.println("Value of SPTerm way: "+way);
 
             for(j=0;j<i;j++){
-                read[j] = way;
-            }
-                
-            queryRead = sp.openQuery(pred, read);
-             
-            while (queryRead.nextSolution()){
-                System.out.println("Valor Resultado Query: "+way.toString());
-                jTextArea1.append(way.toString() + " \n");
+                if(Character.isUpperCase(predicadoArgs[j].charAt(0))){
+                    //System.out.println("Variable");
+                    read[j] = way;
+                }
+                else{
+                    //System.out.println("Argumentos");
+                    read[j] = new SPTerm(sp,predicadoArgs[j]);
+                }
             }
            
-            jTextField1.setText("Fim da Query pretendida");
+            queryRead = sp.openQuery(pred, read);
+            int numberSolution = 1;
+            
+            while (queryRead.nextSolution()){
+                //System.out.println("Valor Resultado Query: "+way.toString());
+                jTextArea1.append(way.toString() + " \n");
+                numberSolution++;
+            }
+           
+            if(numberSolution==1) { jTextArea1.setText("Não é um predicado"); }
+            else{ jTextArea1.append("\nFim da Query pretendida\n"); }
             for(j=0;j<i;j++){
                 read[j] = null;
                 predicadoArgs[j] = null;
             }
+            
         }
+        
         catch ( Exception e ){
             e.printStackTrace();
         }
