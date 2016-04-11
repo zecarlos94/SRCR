@@ -146,7 +146,7 @@ public class Interface extends javax.swing.JFrame {
       HashMap wayMap = new HashMap();
       try{
           p = new SICStus(args,null);
-          
+          jTextArea1.setText("");
           if(jTextField2.getText().equals("")) {
               p.restore("exercicio2.sav");
           }
