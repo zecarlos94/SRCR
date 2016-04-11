@@ -31,10 +31,23 @@ demo(Q, desconhecido) :- nao(Q), nao(-Q).
 inserir(T) :- assert(T).
 inserir(T) :- retract(T), !, fail.
 
+remover(T) :- retract(T).
+remover(T) :- assert(T), !, fail.
+
 testar([]).
 testar([I | L]) :- I, testar(L).
 
-evolucao(T) :- findall(I, +T :: I, L), inserir(T), testar(L).
+registar(T) :- removeNulo(T), registar(T).
+registar(T) :- findall(I, +T :: I, L), inserir(T), testar(L).
+
+eliminar(T) :- findall(I, -T :: I, L), remover(T), testar(L).
+
+removeNulo(utente(IdU, N, I, M)) :- retract(utente(IdU, N, xpto1, M)). 
+removeNulo(utente(IdU, N, I, M)) :- retract(utente(IdU, N, I, xpto2)).
+removeNulo(servico(IdS, D, I, C)) :- retract(servico(IdS, D, xpto3, C)).
+removeNulo(servico(IdS, D, I, C)) :- retract(servico(IdS, D, I, xpto4)).
+removeNulo(consulta(D, IdU, IdS, C)) :- retract(consulta(xpto5, IdU, IdS, C)).
+removeNulo(consulta(consulta(D, IdU, IdS, C))) :- retract(consulta(D, IdU, IdS, xpto6)).
 
 
 % Base de conhecimento de utentes ----------------------------------------------------------------------------------------------------------------------
@@ -48,11 +61,14 @@ utente(2, carlos_sousa, 45, rua_dos_malmequeres).
 
 
 % Conhecimento imperfeito incerto
-utente(3, joao_seabra, nulo, rua_da_alegria).
-utente(4, tiago_barbosa, 37, nulo).
+utente(3, joao_seabra, xpto1, rua_da_alegria).
+utente(4, tiago_barbosa, 37, xpto2).
 
-exception(utente(Id, N, I, M)) :- utente(Id, N, nulo, M).
-exception(utente(Id, N, I, M)) :- utente(Id, N, I, nulo). 
+exception(utente(Id, N, I, M)) :- utente(Id, N, xpto1, M).
+exception(utente(Id, N, I, M)) :- utente(Id, N, I, xpto2). 
+
+nulo(xpto1).
+nulo(xpto2).
 
 
 % Conhecimento imperfeito impreciso
@@ -82,11 +98,14 @@ servico(2, pediatria, hospital_porto, porto).
 
 
 % Conhecimento imperfeito incerto
-servico(3, cirurgia, nulo, lisboa).
-servico(4, radiologia, ipo_porto, nulo).
+servico(3, cirurgia, xpto3, lisboa).
+servico(4, radiologia, ipo_porto, xpto4).
 
-exception(servico(IdS, D, I, C)) :- servico(IdS, D, nulo, C).
-exception(servico(IdS, D, I, C)) :- servico(IdS, D, I, nulo).
+exception(servico(IdS, D, I, C)) :- servico(IdS, D, xpto3, C).
+exception(servico(IdS, D, I, C)) :- servico(IdS, D, I, xpto4).
+
+nulo(xpto3).
+nulo(xpto4).
 
 
 % Conhecimento imperfeito impreciso
@@ -118,11 +137,14 @@ consulta(25-2-2016, 2, 3, 30).
 
 
 % Conhecimento imperfeito incerto
-consulta(nulo, 3, 1, 25).
-consulta(30-5-2014, 4, 2, nulo).
+consulta(xpto5, 3, 1, 25).
+consulta(30-5-2014, 4, 2, xpto6).
 
-exception(consulta(D, IdU, IdS, C)) :- consulta(nulo, IdU, IdS, C).
-exception(consulta(D, IdU, IdS, C)) :- consulta(D, IdU, IdS, nulo).
+nulo(xpto5).
+nulo(xpto6).
+
+exception(consulta(D, IdU, IdS, C)) :- consulta(xpto5, IdU, IdS, C).
+exception(consulta(D, IdU, IdS, C)) :- consulta(D, IdU, IdS, xpto6).
 
 
 % Conhecimento imperfeito impreciso
@@ -140,3 +162,37 @@ exception(consulta(D, 1, 4, 10)).
 +consulta(7-12-2015, 4, 3, C) :: (findall((7-12-2015, 4, 3, C), consulta(7-12-2015, 4, 3, C), S), length(S, T), T == 0).
 +consulta(D, 1, 4, 10) :: (findall((D, 1, 4, 10), consulta(D, 1, 4, 10), S), length(S, T), T == 0).
 
+
+% Não pode inserir utentes com o mesmo id --------------------------------------------------------------------------------------------------------
+
++utente(IdU, N, I, M) :: (findall((Id, N2, I2, M2), utente(Id, N2, I2, M2), S), length(S, T), T == 1).
+
+
+% Não pode inserir serviços com o mesmo id -------------------------------------------------------------------------------------------------------
+
++servico(IdS, D, I, C) :: (findall((IdS, D2, I2, C2), utente(Id, D2, I2, C2), S), length(S, T), T == 1).
+
+
+% Não pode inserir consultas do mesmo utente no mesmo serviço e na mesma data --------------------------------------------------------------------
+
++consulta(D, IdU, IdS, C) :: (findall((D, IdU, IdS, C2), consulta(D, IdU, IdS, C2), S), length(S, T), T == 1).
+
+
+% Para inserir uma consulta deverá já existir o utente -------------------------------------------------------------------------------------------
+
++consulta(D, IdU, IdS, C) :: (findall(IdU, utente(IdU, N, I, M), S), length(S, T), T == 1).
+
+
+% Para inserir uma consulta deverá já existir o serviço -------------------------------------------------------------------------------------------
+
++consulta(D, IdU, IdS, C) :: (findall(IdS, servico(IdS, Descr, I, Cid), S), length(S, T), T == 1).
+
+
+% Para remover um serviço, este não deve ter consultas associadas ---------------------------------------------------------------------------------
+
+-servico(IdS, D, I, C) :: (findall(IdS, consulta(Data, IdU, IdS, Custo), S), length(S, T), T == 0).
+
+
+% Para remover um utente, este não deve ter consultas associadas ----------------------------------------------------------------------------------
+
+-utente(IdU, N, I, M) :: (findall(IdU, consulta(Data, IdU, IdS, Custo), S), length(S, T), T == 0).
