@@ -6,13 +6,21 @@
 package srcr_tp2;
 
 import static java.lang.System.exit;
+import java.util.HashMap;
+import se.sics.jasper.Query;
+import se.sics.jasper.SICStus;
 
 /**
  *
  * @author zecarlos
  */
 public class InterfaceFinal extends javax.swing.JFrame {
-
+    SICStus p;
+    Query t;
+    HashMap wayMap = new HashMap();
+    String predicado,ficheiro;
+    String[] args;
+    int type;
     /**
      * Creates new form InterfaceFinal
      */
@@ -53,6 +61,12 @@ public class InterfaceFinal extends javax.swing.JFrame {
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
             }
         });
 
@@ -175,6 +189,74 @@ public class InterfaceFinal extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        String queryPedida="";
+        if(jComboBox2.getItemCount()>0) {
+        String nomePredicado=(String)jComboBox2.getSelectedItem();
+        switch(nomePredicado){
+            case "nao":
+                            queryPedida=nomePredicado+"("+jTextField1.getText()+").";
+                            break;                          
+            case "inserir":
+                            queryPedida=nomePredicado+"("+jTextField1.getText()+").";
+                            break;
+            case "testar":
+                            queryPedida=nomePredicado+"("+jTextField1.getText()+").";
+                            break; 
+            case "evolucao":
+                            queryPedida=nomePredicado+"("+jTextField1.getText()+").";
+                            break;
+            case "exception":
+                            queryPedida=nomePredicado+"("+jTextField1.getText()+").";
+                            break;               
+            case "utente":
+                            queryPedida=nomePredicado+"("+jTextField1.getText()+","+jTextField2.getText()+","+
+                                        jTextField3.getText()+","+jTextField4.getText()+").";
+                            break;               
+            case "servico":
+                            queryPedida=nomePredicado+"("+jTextField1.getText()+","+jTextField2.getText()+","+
+                                        jTextField3.getText()+","+jTextField4.getText()+").";
+                            break;
+            case "consulta":
+                            queryPedida=nomePredicado+"("+jTextField1.getText()+","+jTextField2.getText()+","+
+                                        jTextField3.getText()+","+jTextField4.getText()+").";
+                            break;                              
+            case "demo":
+                            queryPedida=nomePredicado+"("+jTextField1.getText()+","+jTextField2.getText()+").";
+                            break;           
+        }
+       }
+      if(type==2){
+            SICStus p;
+            Query t;
+            HashMap wayMap = new HashMap();
+            try{
+                p = new SICStus(args,null);
+                jTextArea1.setText("");
+                p.restore("exercicio2.sav"); 
+                t = p.openPrologQuery(queryPedida, wayMap);
+                try{
+                     while (t.nextSolution()){
+                        jTextArea1.append(wayMap.toString()+"\n");
+                }     
+            }finally{
+              t.close();
+            }
+            }catch(Exception es){es.printStackTrace();}
+      }
+      else if(type==1){
+            SICStus p;
+            HashMap wayMap = new HashMap();            
+            try{
+                p = new SICStus(args,null);
+                jTextArea1.setText("");
+                p.restore("exercicio2.sav"); 
+                
+                boolean b = p.query(queryPedida,wayMap); 
+                jTextArea1.append(b+"\n");               
+            }catch(Exception es){
+                es.printStackTrace();
+            }     
+      }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
@@ -183,8 +265,7 @@ public class InterfaceFinal extends javax.swing.JFrame {
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
-        int pos,num=0;
-        String existe="";
+        
         String tipo=(String)jComboBox1.getSelectedItem();
         switch(tipo){
             case "Yes/No":
@@ -193,7 +274,8 @@ public class InterfaceFinal extends javax.swing.JFrame {
                            jComboBox2.addItem("inserir");
                            jComboBox2.addItem("testar");
                            jComboBox2.addItem("evolucao");
-                           jComboBox2.addItem("exception");                    
+                           jComboBox2.addItem("exception"); 
+                           type=1;
                            break;
                            
             case "Normal":
@@ -202,6 +284,7 @@ public class InterfaceFinal extends javax.swing.JFrame {
                            jComboBox2.addItem("servico");
                            jComboBox2.addItem("consulta");
                            jComboBox2.addItem("demo");
+                           type=2;
                            break;
         }
                
@@ -211,6 +294,42 @@ public class InterfaceFinal extends javax.swing.JFrame {
         // TODO add your handling code here:
          exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        // TODO add your handling code here:
+       if(jComboBox2.getItemCount()>0) {
+        String nomePredicado=(String)jComboBox2.getSelectedItem();
+        switch(nomePredicado){
+            case "nao":
+                            jLabel3.setText("Introduza 1 questão para ser negada");
+                            break;                          
+            case "inserir":
+                            jLabel3.setText("Introduza 1 termo para inserir");
+                            break;
+            case "testar":
+                            jLabel3.setText("Introduza 1 lista de Invariantes para testar");
+                            break; 
+            case "evolucao":
+                            jLabel3.setText("Introduza 1 termo para evoluir a base de conhecimento");           
+                            break;
+            case "exception":
+                            jLabel3.setText("Insira 1 predicado para ser excepção");
+                            break;               
+            case "utente":
+                            jLabel3.setText("Insira os 4 argumentos do predicado utente por ordem");
+                            break;               
+            case "servico":
+                            jLabel3.setText("Insira os 4 argumentos do predicado serviço por ordem");
+                            break;
+            case "consulta":
+                            jLabel3.setText("Insira os 4 argumentos do predicado consulta por ordem");
+                            break;                              
+            case "demo":
+                           jLabel3.setText("Introduza os 2 argumentos do predicado que acabou de escolher por ordem");
+                           break;           
+        }
+       }
+    }//GEN-LAST:event_jComboBox2ActionPerformed
 
  
 
