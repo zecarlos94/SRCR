@@ -6,35 +6,25 @@
 package srcr_tp2;
 
 import static java.lang.System.exit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import se.sics.jasper.SICStus;
-import se.sics.jasper.SPException;
-import se.sics.jasper.SPPredicate;
-import se.sics.jasper.SPQuery;
-import se.sics.jasper.SPTerm;
-import java.util.StringTokenizer;
-import se.sics.jasper.SPCanonicalAtom;
+import java.util.HashMap;
+import se.sics.jasper.*;
+
 /**
  *
  * @author zecarlos
  */
 public class Interface extends javax.swing.JFrame {
     
-    SICStus sp;
-    SPPredicate pred;
-    SPTerm way;
-    SPQuery queryRead;
-    DefaultListModel listModel;
+    SICStus p;
+    Query t;
+    HashMap wayMap = new HashMap();
     String predicado,ficheiro;
+    String[] args;
     
     /**
      * Creates new form Interface
      */
     public Interface() {
-        listModel = new DefaultListModel();
         initComponents();
     }
 
@@ -151,75 +141,39 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        jTextArea1.setText("");
-        String argv[]=null;
-        String predicadoArgs[]=new String[1000];
-        String name=" ";
-        int i=0,j;
-       
-        try{
-            sp = new SICStus(argv,null);
-            if(jTextField2.getText().equals("")){ 
-                this.ficheiro = "exercicio2.pl" ;
-                jTextField2.setText("exercicio2.pl");
-            }
-            else { this.ficheiro = jTextField2.getText(); }
-            
-            sp.load(this.ficheiro);
-            this.predicado = jTextField1.getText();
+      SICStus p;
+      Query t;
+      HashMap wayMap = new HashMap();
+      try{
+          p = new SICStus(args,null);
+          
+          if(jTextField2.getText().equals("")) {
+              p.restore("exercicio2.sav");
+          }
+          else{
+              p.restore(jTextField2.getText());
+          }
+         
+          
+          //t = p.openPrologQuery("voa(X).", wayMap);
+          //t = p.openPrologQuery("voa(piupiu).", wayMap);
+          //t = p.openPrologQuery("demo(voa(batemene),R).", wayMap);
+          this.predicado = jTextField1.getText();
+          t = p.openPrologQuery(this.predicado, wayMap);
+          
+          try{
+               while (t.nextSolution()){
+                   jTextArea1.append(wayMap.toString()+"\n");
+                   //System.out.println(wayMap);
+               }
+      
+          }finally{
+              t.close();
+          }
+          
+      }catch(Exception es){es.printStackTrace();}
 
-            //String predicado = "predicado(a,b,c,d).";
-	    StringTokenizer st = new StringTokenizer(predicado,"(,).");
-
-	    while (st.hasMoreElements()) {
-                if(i==0) name=st.nextToken(); 
-		predicadoArgs[i]=st.nextToken();
-                i++;
-            }
-            //System.out.println("Name of predicate: "+name);
-            //System.out.println("Number of arguments: "+i);
-            
-            SPTerm[] read = new SPTerm[i];
-            //System.out.println("Size of  SPTerm[] read: "+read.length);
-             
-            //for(j=0;j<i;j++) System.out.println(predicadoArgs[j]);
-            
-            pred = new SPPredicate(sp,name, i , "");
-            way = new SPTerm(sp).putVariable();
-            //System.out.println("Value of SPTerm way: "+way);
-
-            for(j=0;j<i;j++){
-                if(Character.isUpperCase(predicadoArgs[j].charAt(0))){
-                    //System.out.println("Variable");
-                    read[j] = way;
-                }
-                else{
-                    //System.out.println("Argumentos");
-                    read[j] = new SPTerm(sp,predicadoArgs[j]);
-                }
-            }
-           
-            queryRead = sp.openQuery(pred, read);
-            int numberSolution = 1;
-            
-            while (queryRead.nextSolution()){
-                //System.out.println("Valor Resultado Query: "+way.toString());
-                jTextArea1.append(way.toString() + " \n");
-                numberSolution++;
-            }
-           
-            if(numberSolution==1) { jTextArea1.setText("Não é um predicado"); }
-            else{ jTextArea1.append("\nFim da Query pretendida\n"); }
-            for(j=0;j<i;j++){
-                read[j] = null;
-                predicadoArgs[j] = null;
-            }
-            
-        }
         
-        catch ( Exception e ){
-            e.printStackTrace();
-        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
