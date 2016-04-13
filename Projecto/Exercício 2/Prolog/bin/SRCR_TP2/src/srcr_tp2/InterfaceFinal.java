@@ -7,8 +7,12 @@ package srcr_tp2;
 
 import static java.lang.System.exit;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import se.sics.jasper.Query;
 import se.sics.jasper.SICStus;
+import se.sics.jasper.SPException;
 
 /**
  *
@@ -54,6 +58,8 @@ public class InterfaceFinal extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        jTextField5 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -108,30 +114,49 @@ public class InterfaceFinal extends javax.swing.JFrame {
 
         jLabel7.setText("4º");
 
+        jButton3.setText("Procurar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addGap(0, 80, Short.MAX_VALUE))
+                        .addGap(0, 199, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jButton2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextField5))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel2))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -145,7 +170,6 @@ public class InterfaceFinal extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                                     .addComponent(jTextField4))))
-                        .addGap(0, 0, 0)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
                             .addComponent(jLabel7))
@@ -156,10 +180,14 @@ public class InterfaceFinal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton3)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -177,7 +205,7 @@ public class InterfaceFinal extends javax.swing.JFrame {
                         .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel7)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -193,15 +221,6 @@ public class InterfaceFinal extends javax.swing.JFrame {
         if(jComboBox2.getItemCount()>0) {
         String nomePredicado=(String)jComboBox2.getSelectedItem();
         switch(nomePredicado){
-            case "nao":
-                            queryPedida=nomePredicado+"("+jTextField1.getText()+").";
-                            break;                          
-            case "inserir":
-                            queryPedida=nomePredicado+"("+jTextField1.getText()+").";
-                            break;
-            case "testar":
-                            queryPedida=nomePredicado+"("+jTextField1.getText()+").";
-                            break; 
             case "evolucao":
                             queryPedida=nomePredicado+"("+jTextField1.getText()+").";
                             break;
@@ -226,36 +245,45 @@ public class InterfaceFinal extends javax.swing.JFrame {
         }
        }
       if(type==2){
-            SICStus p;
-            Query t;
-            HashMap wayMap = new HashMap();
-            try{
-                p = new SICStus(args,null);
+            try {
+                p = new SICStus();
                 jTextArea1.setText("");
-                p.restore("exercicio2.sav"); 
+                if(jTextField5.getText().equals("")){
+                    p.load("exercicio2.pl");
+                }
+                else { p.load(jTextField5.getText()); }
                 t = p.openPrologQuery(queryPedida, wayMap);
-                try{
-                     while (t.nextSolution()){
-                        jTextArea1.append(wayMap.toString()+"\n");
-                }     
-            }finally{
-              t.close();
+                int j=1;
+                while (t.nextSolution()) {
+                        //parsing da string resposta do hashmap
+                        int i=0;
+                        String resultado, aux = wayMap.toString();
+                        System.out.println(aux);
+                        while(aux.charAt(i)!='{') i++;
+                        i++;                            
+                        resultado=(aux.substring(i, aux.length()-1));      
+                        jTextArea1.append("Solução #"+j+" => "+resultado +"\n");   
+                        j++;
+                }
+                t.close();           
+            } catch (Exception es) {
+                es.printStackTrace();
             }
-            }catch(Exception es){es.printStackTrace();}
       }
       else if(type==1){
-            SICStus p;
-            HashMap wayMap = new HashMap();            
-            try{
-                p = new SICStus(args,null);
+           try {
+                p = new SICStus();
                 jTextArea1.setText("");
-                p.restore("exercicio2.sav"); 
-                
+                if(jTextField5.getText().equals("")){
+                    p.load("exercicio2.pl");
+                }
+                else { p.load(jTextField5.getText()); }
                 boolean b = p.query(queryPedida,wayMap); 
-                jTextArea1.append(b+"\n");               
-            }catch(Exception es){
+                jTextArea1.append("Valor de Verdade => "+b +"\n");             
+                t.close();  
+            } catch (Exception es) {
                 es.printStackTrace();
-            }     
+            }
       }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -270,21 +298,31 @@ public class InterfaceFinal extends javax.swing.JFrame {
         switch(tipo){
             case "Yes/No":
                            jComboBox2.removeAllItems();
-                           jComboBox2.addItem("nao");
-                           jComboBox2.addItem("inserir");
-                           jComboBox2.addItem("testar");
+                           jComboBox2.addItem("demo");
                            jComboBox2.addItem("evolucao");
                            jComboBox2.addItem("exception"); 
+                           jComboBox2.addItem("utente");
+                           jComboBox2.addItem("servico");
+                           jComboBox2.addItem("consulta");
                            type=1;
+                           jTextArea1.setText("");
+                           jTextField1.setText("");
+                           jTextField2.setText("");
+                           jTextField3.setText("");
+                           jTextField4.setText("");
                            break;
                            
             case "Normal":
                            jComboBox2.removeAllItems();                         
                            jComboBox2.addItem("utente");
                            jComboBox2.addItem("servico");
-                           jComboBox2.addItem("consulta");
-                           jComboBox2.addItem("demo");
+                           jComboBox2.addItem("consulta");                           
                            type=2;
+                           jTextArea1.setText("");
+                           jTextField1.setText("");
+                           jTextField2.setText("");
+                           jTextField3.setText("");
+                           jTextField4.setText("");
                            break;
         }
                
@@ -299,16 +337,7 @@ public class InterfaceFinal extends javax.swing.JFrame {
         // TODO add your handling code here:
        if(jComboBox2.getItemCount()>0) {
         String nomePredicado=(String)jComboBox2.getSelectedItem();
-        switch(nomePredicado){
-            case "nao":
-                            jLabel3.setText("Introduza 1 questão para ser negada");
-                            break;                          
-            case "inserir":
-                            jLabel3.setText("Introduza 1 termo para inserir");
-                            break;
-            case "testar":
-                            jLabel3.setText("Introduza 1 lista de Invariantes para testar");
-                            break; 
+        switch(nomePredicado){            
             case "evolucao":
                             jLabel3.setText("Introduza 1 termo para evoluir a base de conhecimento");           
                             break;
@@ -331,11 +360,31 @@ public class InterfaceFinal extends javax.swing.JFrame {
        }
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    JFileChooser procurar = new JFileChooser();
+    procurar.setCurrentDirectory(new java.io.File("."));
+    procurar.setDialogTitle("Escolha o seu ficheiro: ");
+    procurar.setFileSelectionMode(JFileChooser.FILES_ONLY);
+    procurar.setAcceptAllFileFilterUsed(false);
+
+    if (procurar.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+      jTextField5.setText(procurar.getSelectedFile().toString());
+    } else {
+      jTextField5.setText("");
+    }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField5ActionPerformed
+
  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
@@ -351,5 +400,6 @@ public class InterfaceFinal extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
 }
