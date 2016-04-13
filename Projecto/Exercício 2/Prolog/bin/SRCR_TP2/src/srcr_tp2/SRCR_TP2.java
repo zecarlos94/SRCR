@@ -17,7 +17,7 @@ public class SRCR_TP2 {
     public static void main(String[] args) {
         // TODO code application logic here
        // Interface i = new Interface();
-        InterfacePronta i = new InterfacePronta();
+        Interface i = new Interface();
         i.setVisible(true);
     }
     
