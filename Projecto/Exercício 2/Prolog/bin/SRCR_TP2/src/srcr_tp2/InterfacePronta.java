@@ -245,9 +245,121 @@ public class InterfacePronta extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here: Executar QUERIES!!!
         String pred, arg_1="",arg_2="",arg_3="",arg_4="";
-        int ok=0;
+        int ok=0,args=0;
         switch(type){
             case 1: //query do tipo valor de verdade
+                    query_tipo_valor_verdade="";
+                    jTextArea1.setText("");
+                    try{
+                        p = new SICStus();
+                        if(jTextField1.getText().equals("")){
+                            p.load("exercicio2.pl");
+                        }
+                        else{
+                             p.load(jTextField1.getText());
+                        }
+                        
+                        pred  = (String)jComboBox2.getSelectedItem();
+                        
+                        switch(pred){     // Tem de ser letras Maiusculas!!!        
+                            case "evolucao":
+                                            args=1;
+                                            arg_1 = jTextField3.getText();
+                                            if(!(arg_1.equals(""))){ok=1;}
+                                            break;
+                            case "exception":
+                                            args=1;
+                                            arg_1 = jTextField3.getText();
+                                            if(!(arg_1.equals(""))){ok=1;}
+                                            break;               
+                            case "utente":
+                                            args=4;
+                                            arg_1 = jTextField3.getText();
+                                            arg_2 = jTextField4.getText();
+                                            arg_3 = jTextField5.getText();
+                                            arg_4 = jTextField6.getText();
+                                            if(
+                                            (!(arg_1.equals(""))) &&
+                                            (!(arg_2.equals(""))) &&
+                                            (!(arg_3.equals(""))) &&
+                                            (!(arg_4.equals("")))                                                   
+                                            ){ok=1;}
+                                            break;               
+                            case "servico":
+                                            args=4;
+                                            arg_1 = jTextField3.getText();
+                                            arg_2 = jTextField4.getText();
+                                            arg_3 = jTextField5.getText();
+                                            arg_4 = jTextField6.getText();
+                                            if(
+                                            (!(arg_1.equals(""))) &&
+                                            (!(arg_2.equals(""))) &&
+                                            (!(arg_3.equals(""))) &&
+                                            (!(arg_4.equals("")))                                                   
+                                            ){ok=1;}
+                                            break;
+                             case "consulta":
+                                            args=4;
+                                            arg_1 = jTextField3.getText();
+                                            arg_2 = jTextField4.getText();
+                                            arg_3 = jTextField5.getText();
+                                            arg_4 = jTextField6.getText();
+                                            if(
+                                            (!(arg_1.equals(""))) &&
+                                            (!(arg_2.equals(""))) &&
+                                            (!(arg_3.equals(""))) &&
+                                            (!(arg_4.equals("")))                                                   
+                                            ){ok=1;}
+                                            break;                              
+                            case "demo":
+                                            args=2;
+                                            arg_1 = jTextField3.getText();
+                                            arg_2 = jTextField4.getText();
+                                            if(
+                                            (!(arg_1.equals(""))) &&
+                                            (!(arg_2.equals("")))                                                   
+                                            ){ok=1;}
+                                            break;            
+                        }       
+                    
+                    System.out.println(arg_1); 
+                    System.out.println(arg_2); 
+                    System.out.println(arg_3); 
+                    System.out.println(arg_4); 
+                        
+                    if(ok==0){ // Campos Vazios
+                        System.out.println("Campos dos Argumentos Vazios"); 
+                        jTextArea1.append("Campos dos Argumentos Vazios\n");
+                    }
+                        
+                    else if(ok==1){ // Não existem campos vazios
+                        
+                        switch(args){
+                            case 1: 
+                                    query_tipo_valor_verdade = pred + "("
+                                        + arg_1 + ").";
+                                    break;
+                            case 2: 
+                                    query_tipo_valor_verdade = pred + "("
+                                        + arg_1 + "," + arg_2 + ").";
+                                    break;
+                            case 4: 
+                                    query_tipo_valor_verdade = pred + "("
+                                        + arg_1 + "," + arg_2 + ","
+                                        + arg_3 + "," + arg_4 + ").";
+                                    break;
+                        }
+                        
+                        
+                        System.out.println(query_tipo_valor_verdade);
+                        boolean qq = p.query(query_tipo_valor_verdade,h);
+                        jTextArea1.append("Predicado Executado => "+ query_tipo_valor_verdade +"\n");                       
+                        q.close();
+                    }   
+                    }catch(Exception e) {
+                            e.printStackTrace();
+                            System.out.println("Problema a Ler Ficheiro");
+                    }          
                     break;
             case 2: //query do tipo normal
                     query_tipo_normal="";
@@ -265,14 +377,17 @@ public class InterfacePronta extends javax.swing.JFrame {
                         
                         switch(pred){     // Tem de ser letras Maiusculas!!!        
                             case "evolucao":
+                                            args=1;
                                             arg_1 = jTextField3.getText();
                                             if(Character.isUpperCase(arg_1.charAt(0))){ok=1;}
                                             break;
                             case "exception":
+                                            args=1;
                                             arg_1 = jTextField3.getText();
                                             if(Character.isUpperCase(arg_1.charAt(0))){ok=1;}
                                             break;               
                             case "utente":
+                                            args=4;
                                             arg_1 = jTextField3.getText();
                                             arg_2 = jTextField4.getText();
                                             arg_3 = jTextField5.getText();
@@ -285,6 +400,7 @@ public class InterfacePronta extends javax.swing.JFrame {
                                             ){ok=1;}
                                             break;               
                             case "servico":
+                                            args=4;
                                             arg_1 = jTextField3.getText();
                                             arg_2 = jTextField4.getText();
                                             arg_3 = jTextField5.getText();
@@ -297,6 +413,7 @@ public class InterfacePronta extends javax.swing.JFrame {
                                             ){ok=1;}
                                             break;
                              case "consulta":
+                                            args=4;
                                             arg_1 = jTextField3.getText();
                                             arg_2 = jTextField4.getText();
                                             arg_3 = jTextField5.getText();
@@ -309,6 +426,7 @@ public class InterfacePronta extends javax.swing.JFrame {
                                             ){ok=1;}
                                             break;                              
                             case "demo":
+                                            args=2;
                                             arg_1 = jTextField3.getText();
                                             arg_2 = jTextField4.getText();
                                             if((Character.isUpperCase(arg_1.charAt(0))) &&
@@ -329,10 +447,22 @@ public class InterfacePronta extends javax.swing.JFrame {
                     }
                         
                     else if(ok==1){ // São Variavéis
-                        query_tipo_normal = 
-                               pred + "("
-                               + arg_1 + "," + arg_2 + ","
-                               + arg_3 + "," + arg_4 + ").";
+                        
+                        switch(args){
+                            case 1: 
+                                    query_tipo_normal = pred + "("
+                                        + arg_1 + ").";
+                                    break;
+                            case 2: 
+                                    query_tipo_normal = pred + "("
+                                        + arg_1 + "," + arg_2 + ").";
+                                    break;
+                            case 4: 
+                                    query_tipo_normal = pred + "("
+                                        + arg_1 + "," + arg_2 + ","
+                                        + arg_3 + "," + arg_4 + ").";
+                                    break;
+                        }                       
                         
                         System.out.println(query_tipo_normal);
                         q = p.openPrologQuery(query_tipo_normal,h);
