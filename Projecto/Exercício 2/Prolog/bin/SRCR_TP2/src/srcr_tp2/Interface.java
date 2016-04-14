@@ -262,16 +262,17 @@ public class Interface extends javax.swing.JFrame {
                         pred  = (String)jComboBox2.getSelectedItem();
                         
                         switch(pred){     // Tem de ser letras Maiusculas!!!        
-                            case "evolucao":
+                            case "registar":
                                             args=1;
                                             arg_1 = jTextField3.getText();
                                             if(!(arg_1.equals(""))){ok=1;}
                                             break;
-                            case "exception":
-                                            args=1;
+                            case "demo":
+                                            args=2;
                                             arg_1 = jTextField3.getText();
-                                            if(!(arg_1.equals(""))){ok=1;}
-                                            break;               
+                                            arg_2 = jTextField4.getText();
+                                            if((Character.isUpperCase(arg_2.charAt(0)))){ok=1;}
+                                            break;                 
                             case "utente":
                                             args=4;
                                             arg_1 = jTextField3.getText();
@@ -310,16 +311,7 @@ public class Interface extends javax.swing.JFrame {
                                             (!(arg_3.equals(""))) &&
                                             (!(arg_4.equals("")))                                                   
                                             ){ok=1;}
-                                            break;                              
-                            case "demo":
-                                            args=2;
-                                            arg_1 = jTextField3.getText();
-                                            arg_2 = jTextField4.getText();
-                                            if(
-                                            (!(arg_1.equals(""))) &&
-                                            (!(arg_2.equals("")))                                                   
-                                            ){ok=1;}
-                                            break;            
+                                            break;                                                                 
                         }       
                     
                     System.out.println(arg_1); 
@@ -354,7 +346,7 @@ public class Interface extends javax.swing.JFrame {
                         System.out.println(query_tipo_valor_verdade);
                         boolean qq = p.query(query_tipo_valor_verdade,h);
                         jTextArea1.append("Predicado Executado => "+ query_tipo_valor_verdade +"\n");                       
-                        q.close();
+                        jTextArea1.append(qq+"\n");
                     }   
                     }catch(Exception e) {
                             e.printStackTrace();
@@ -376,7 +368,7 @@ public class Interface extends javax.swing.JFrame {
                         pred  = (String)jComboBox2.getSelectedItem();
                         
                         switch(pred){     // Tem de ser letras Maiusculas!!!        
-                            case "evolucao":
+                            case "listing":
                                             args=1;
                                             arg_1 = jTextField3.getText();
                                             if(Character.isUpperCase(arg_1.charAt(0))){ok=1;}
@@ -407,9 +399,9 @@ public class Interface extends javax.swing.JFrame {
                                             arg_4 = jTextField6.getText();
                                             if(
                                             (Character.isUpperCase(arg_1.charAt(0))) &&
-                                            (Character.isUpperCase(arg_1.charAt(0))) &&
-                                            (Character.isUpperCase(arg_1.charAt(0))) &&
-                                            (Character.isUpperCase(arg_1.charAt(0)))                                                   
+                                            (Character.isUpperCase(arg_2.charAt(0))) &&
+                                            (Character.isUpperCase(arg_3.charAt(0))) &&
+                                            (Character.isUpperCase(arg_4.charAt(0)))                                                   
                                             ){ok=1;}
                                             break;
                              case "consulta":
@@ -420,18 +412,11 @@ public class Interface extends javax.swing.JFrame {
                                             arg_4 = jTextField6.getText();
                                             if(
                                             (Character.isUpperCase(arg_1.charAt(0))) &&
-                                            (Character.isUpperCase(arg_1.charAt(0))) &&
-                                            (Character.isUpperCase(arg_1.charAt(0))) &&
-                                            (Character.isUpperCase(arg_1.charAt(0)))                                                   
+                                            (Character.isUpperCase(arg_2.charAt(0))) &&
+                                            (Character.isUpperCase(arg_3.charAt(0))) &&
+                                            (Character.isUpperCase(arg_4.charAt(0)))                                                   
                                             ){ok=1;}
-                                            break;                              
-                            case "demo":
-                                            args=2;
-                                            arg_1 = jTextField3.getText();
-                                            arg_2 = jTextField4.getText();
-                                            if((Character.isUpperCase(arg_1.charAt(0))) &&
-                                            (Character.isUpperCase(arg_1.charAt(0)))){ok=1;}
-                                            break;            
+                                            break;                                                                     
                         }       
                     
                     System.out.println(arg_1); 
@@ -532,13 +517,12 @@ public class Interface extends javax.swing.JFrame {
         String tipo=(String)jComboBox1.getSelectedItem();
         switch(tipo){
             case "Valor de Verdade":
-                           jComboBox2.removeAllItems();
-                           jComboBox2.addItem("demo");
-                           jComboBox2.addItem("evolucao");
-                           jComboBox2.addItem("exception"); 
+                           jComboBox2.removeAllItems();                           
+                           jComboBox2.addItem("registar");                           
                            jComboBox2.addItem("utente");
                            jComboBox2.addItem("servico");
                            jComboBox2.addItem("consulta");
+                           jComboBox2.addItem("demo");
                            type=1;
                            jTextArea1.setText("");
                            jLabel3.setText("");
@@ -554,7 +538,9 @@ public class Interface extends javax.swing.JFrame {
                            jComboBox2.removeAllItems();                         
                            jComboBox2.addItem("utente");
                            jComboBox2.addItem("servico");
-                           jComboBox2.addItem("consulta");                           
+                           jComboBox2.addItem("consulta"); 
+                           jComboBox2.addItem("exception"); 
+                           jComboBox2.addItem("listing");
                            type=2;
                            jTextArea1.setText("");
                            jLabel3.setText("");
@@ -586,8 +572,11 @@ public class Interface extends javax.swing.JFrame {
         // TODO add your handling code here:
       if(type!=3 && jComboBox2.getItemCount()>0) {
         String nomePredicado=(String)jComboBox2.getSelectedItem();
-        switch(nomePredicado){            
-            case "evolucao":
+        switch(nomePredicado){  
+            case "listing":
+                            jLabel4.setText("Introduza 1 argumento do predicado que acabou de escolher por ordem");
+                            break; 
+            case "registar":
                             jLabel4.setText("Introduza 1 termo para evoluir a base de conhecimento");           
                             break;
             case "exception":

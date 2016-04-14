@@ -37,17 +37,17 @@ remover(T) :- assert(T), !, fail.
 testar([]).
 testar([I | L]) :- I, testar(L).
 
+removeNulo(utente(IdU, N, I, M)) :- I \= xpto1, retract(utente(IdU, N, xpto1, M)). 
+removeNulo(utente(IdU, N, I, M)) :- M \= xpto2, retract(utente(IdU, N, I, xpto2)).
+removeNulo(servico(IdS, D, I, C)) :- I \= xpto3, retract(servico(IdS, D, xpto3, C)).
+removeNulo(servico(IdS, D, I, C)) :- C \= xpto4, retract(servico(IdS, D, I, xpto4)).
+removeNulo(consulta(D, IdU, IdS, C)) :- D \= xpto5, retract(consulta(xpto5, IdU, IdS, C)).
+removeNulo(consulta(D, IdU, IdS, C)) :- C \= xpto6, retract(consulta(D, IdU, IdS, xpto6)).
+
 registar(T) :- removeNulo(T), registar(T).
 registar(T) :- findall(I, +T :: I, L), inserir(T), testar(L).
 
 eliminar(T) :- findall(I, -T :: I, L), remover(T), testar(L).
-
-removeNulo(utente(IdU, N, I, M)) :- retract(utente(IdU, N, xpto1, M)). 
-removeNulo(utente(IdU, N, I, M)) :- retract(utente(IdU, N, I, xpto2)).
-removeNulo(servico(IdS, D, I, C)) :- retract(servico(IdS, D, xpto3, C)).
-removeNulo(servico(IdS, D, I, C)) :- retract(servico(IdS, D, I, xpto4)).
-removeNulo(consulta(D, IdU, IdS, C)) :- retract(consulta(xpto5, IdU, IdS, C)).
-removeNulo(consulta(consulta(D, IdU, IdS, C))) :- retract(consulta(D, IdU, IdS, xpto6)).
 
 
 % Base de conhecimento de utentes ----------------------------------------------------------------------------------------------------------------------
@@ -165,7 +165,7 @@ exception(consulta(D, 1, 4, 10)).
 
 % Não pode inserir utentes com o mesmo id --------------------------------------------------------------------------------------------------------
 
-+utente(IdU, N, I, M) :: (findall((Id, N2, I2, M2), utente(Id, N2, I2, M2), S), length(S, T), T == 1).
++utente(IdU, N, I, M) :: (findall((IdU, N2, I2, M2), utente(IdU, N2, I2, M2), S), length(S, T), T == 1).
 
 
 % Não pode inserir serviços com o mesmo id -------------------------------------------------------------------------------------------------------
@@ -196,3 +196,8 @@ exception(consulta(D, 1, 4, 10)).
 % Para remover um utente, este não deve ter consultas associadas ----------------------------------------------------------------------------------
 
 -utente(IdU, N, I, M) :: (findall(IdU, consulta(Data, IdU, IdS, Custo), S), length(S, T), T == 0).
+
+
+% Não é permitido adicionar exceções repetidas ----------------------------------------------------------------------------------------------------
+
++exception(Q) :: (findall(Q, exception(Q), S), length(S, T), T == 1).
