@@ -6,7 +6,9 @@
 package srcr_tp2;
 
 import static java.lang.System.exit;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -355,10 +357,10 @@ public class InterfaceFinal extends javax.swing.JFrame {
                 HashMap hh = new HashMap();
                 pred  = (String)jComboBox2.getSelectedItem();                        
                 switch(pred){     // Tem de ser letras Maiusculas!!!        
-                    case "listing":
+                    case "listing": // listing(utente). equivale a listagem(utente,S).
                                     args = 1;
-                                    arg_1 = jTextField3.getText();
-                                    if(Character.isUpperCase(arg_1.charAt(0))){ok=1;}
+                                    arg_1 = jTextField3.getText();                                  
+                                    if(!(arg_1.equals(""))){ok=2;}
                                     break;
                                     
                     case "exception":
@@ -418,7 +420,65 @@ public class InterfaceFinal extends javax.swing.JFrame {
                     System.out.println("Apenas é permitido letras maiúsculas");
                     jTextArea1.append("Campos dos Argumentos mal preenchidos\n");
                     jTextArea1.append("Apenas é permitido letras maiúsculas\n");
-                }                        
+                }
+                else if(ok==2){                     
+                    try { //caso particular do listing(predicado).
+                    query_tipo_normal="listagem("+arg_1+",R)." ;   
+                    System.out.println(query_tipo_normal);
+                    System.out.println("listing("+arg_1+").");
+                    qq = sp.openPrologQuery(query_tipo_normal,hh);
+                    jTextArea1.append("Predicado Executado => "+ "listing("+arg_1+")." +"\n");
+                        try {
+                            qq.nextSolution();
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (Exception ex) {
+                            Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    int i=1;
+                    ArrayList<String> a = new ArrayList<>();
+                    String token;
+                    String resultado;
+                    String aux = hh.toString();                    
+                    resultado=(aux.substring(4, aux.length()-1));
+                    System.out.println("Resultado Original: "+resultado);
+                    StringTokenizer multiTokenizer = new StringTokenizer(resultado, ".");
+                    while (multiTokenizer.hasMoreTokens()){
+                        token=multiTokenizer.nextToken();                        
+                        a.add(token);
+                    }
+                    for(String s: a){
+                        String temp;
+                        if(i==a.size()){ //última string
+                            temp = (s.substring(1, s.length()-7)); 
+                        } 
+                        else{
+                            temp = (s.substring(1, s.length()-1)); 
+                        }
+                        jTextArea1.append("Solução #"+i+" => "+temp+"\n");
+                        System.out.println("Solução #"+i+" => "+temp);
+                        i++;
+                        
+                    }
+                   
+                    
+                     
+                    try {
+                        qq.close();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("InterruptedException caught");
+                        System.out.println("qq.close() failed");
+                    } catch (Exception ex) {
+                        Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("Exception caught");
+                        System.out.println("qq.close() failed");
+                    }
+                } catch (SPException ex) {
+                        Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("listing failed");
+                    }
+                }
                 else if(ok==1){ 
                     try {
                     // São Variavéis
