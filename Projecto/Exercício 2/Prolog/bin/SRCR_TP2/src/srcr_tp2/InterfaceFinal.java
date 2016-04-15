@@ -9,34 +9,26 @@ import static java.lang.System.exit;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
-import se.sics.jasper.Query;
-import se.sics.jasper.SICStus;
-import se.sics.jasper.SPException;
+import javax.swing.*;
+import se.sics.jasper.*;
+
+
 
 /**
  *
  * @author zecarlos
  */
-public class Interface extends javax.swing.JFrame {
-    SICStus p;
-    HashMap h;
-    Query q; 
-    int type;
-    String query_tipo_normal, query_tipo_valor_verdade, query_tipo_outra; 
+public class InterfaceFinal extends javax.swing.JFrame {
+    private static int type=0,args=0,ok=0;
+    private static String query_tipo_outra, query_tipo_normal, query_tipo_valor_verdade;
+    private static String pred,arg_1,arg_2,arg_3,arg_4;
+    private static SICStus sp;
     
     /**
      * Creates new form InterfacePronta
      */
-    public Interface() {
-        this.h                          = new HashMap();
-        this.q                          = null;
-        this.query_tipo_normal          = "";
-        this.query_tipo_valor_verdade   = "";
-        this.query_tipo_outra           = "";
-        
-        initComponents();
+    public InterfaceFinal() {
+        initComponents();       
     }
 
     /**
@@ -65,6 +57,7 @@ public class Interface extends javax.swing.JFrame {
         jTextField5 = new javax.swing.JTextField();
         jTextField6 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -125,6 +118,13 @@ public class Interface extends javax.swing.JFrame {
 
         jLabel4.setText("Insira os N argumentos que serão recomendados na devida altura");
 
+        jButton4.setText("Leitura ");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -138,16 +138,6 @@ public class Interface extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addGap(16, 16, 16)
-                                        .addComponent(jLabel3))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jButton1)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -170,7 +160,19 @@ public class Interface extends javax.swing.JFrame {
                                     .addComponent(jTextField2)
                                     .addComponent(jTextField4)
                                     .addComponent(jTextField5)
-                                    .addComponent(jTextField6))))
+                                    .addComponent(jTextField6)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton4)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                            .addGap(16, 16, 16)
+                                            .addComponent(jLabel3))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jButton1)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                         .addGap(18, 18, 18))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(14, 14, 14)
@@ -188,7 +190,9 @@ public class Interface extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4)
+                        .addGap(25, 25, 25)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2))
@@ -210,7 +214,7 @@ public class Interface extends javax.swing.JFrame {
                         .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 34, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -243,273 +247,287 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here: Executar QUERIES!!!
-        String pred, arg_1="",arg_2="",arg_3="",arg_4="";
-        int ok=0,args=0;
-        switch(type){
-            case 1: //query do tipo valor de verdade
-                    query_tipo_valor_verdade="";
-                    jTextArea1.setText("");
-                    try{
-                        p = new SICStus();
-                        if(jTextField1.getText().equals("")){
-                            p.load("exercicio2.pl");
-                        }
-                        else{
-                             p.load(jTextField1.getText());
-                        }
-                        
-                        pred  = (String)jComboBox2.getSelectedItem();
-                        
-                        switch(pred){     // Tem de ser letras Maiusculas!!!        
-                            case "registar":
-                                            args=1;
-                                            arg_1 = jTextField3.getText();
-                                            if(!(arg_1.equals(""))){ok=1;}
-                                            break;
-                            case "demo":
-                                            args=2;
-                                            arg_1 = jTextField3.getText();
-                                            arg_2 = jTextField4.getText();
-                                            if((Character.isUpperCase(arg_2.charAt(0)))){ok=1;}
-                                            break;                 
-                            case "utente":
-                                            args=4;
-                                            arg_1 = jTextField3.getText();
-                                            arg_2 = jTextField4.getText();
-                                            arg_3 = jTextField5.getText();
-                                            arg_4 = jTextField6.getText();
-                                            if(
-                                            (!(arg_1.equals(""))) &&
-                                            (!(arg_2.equals(""))) &&
-                                            (!(arg_3.equals(""))) &&
-                                            (!(arg_4.equals("")))                                                   
-                                            ){ok=1;}
-                                            break;               
-                            case "servico":
-                                            args=4;
-                                            arg_1 = jTextField3.getText();
-                                            arg_2 = jTextField4.getText();
-                                            arg_3 = jTextField5.getText();
-                                            arg_4 = jTextField6.getText();
-                                            if(
-                                            (!(arg_1.equals(""))) &&
-                                            (!(arg_2.equals(""))) &&
-                                            (!(arg_3.equals(""))) &&
-                                            (!(arg_4.equals("")))                                                   
-                                            ){ok=1;}
-                                            break;
-                             case "consulta":
-                                            args=4;
-                                            arg_1 = jTextField3.getText();
-                                            arg_2 = jTextField4.getText();
-                                            arg_3 = jTextField5.getText();
-                                            arg_4 = jTextField6.getText();
-                                            if(
-                                            (!(arg_1.equals(""))) &&
-                                            (!(arg_2.equals(""))) &&
-                                            (!(arg_3.equals(""))) &&
-                                            (!(arg_4.equals("")))                                                   
-                                            ){ok=1;}
-                                            break;                                                                 
-                        }       
-                    
-                    System.out.println(arg_1); 
-                    System.out.println(arg_2); 
-                    System.out.println(arg_3); 
-                    System.out.println(arg_4); 
-                        
-                    if(ok==0){ // Campos Vazios
-                        System.out.println("Campos dos Argumentos Vazios"); 
-                        jTextArea1.append("Campos dos Argumentos Vazios\n");
-                    }
-                        
-                    else if(ok==1){ // Não existem campos vazios
-                        
-                        switch(args){
-                            case 1: 
-                                    query_tipo_valor_verdade = pred + "("
-                                        + arg_1 + ").";
-                                    break;
-                            case 2: 
-                                    query_tipo_valor_verdade = pred + "("
-                                        + arg_1 + "," + arg_2 + ").";
-                                    break;
-                            case 4: 
-                                    query_tipo_valor_verdade = pred + "("
-                                        + arg_1 + "," + arg_2 + ","
-                                        + arg_3 + "," + arg_4 + ").";
-                                    break;
-                        }
-                        
-                        
-                        System.out.println(query_tipo_valor_verdade);
-                        boolean qq = p.query(query_tipo_valor_verdade,h);
-                        jTextArea1.append("Predicado Executado => "+ query_tipo_valor_verdade +"\n");                       
-                        jTextArea1.append(qq+"\n");
-                    }   
-                    }catch(Exception e) {
-                            e.printStackTrace();
-                            System.out.println("Problema a Ler Ficheiro");
-                    }          
-                    break;
-            case 2: //query do tipo normal
-                    query_tipo_normal="";
-                    jTextArea1.setText("");
-                    try{
-                        p = new SICStus();
-                        if(jTextField1.getText().equals("")){
-                            p.load("exercicio2.pl");
-                        }
-                        else{
-                             p.load(jTextField1.getText());
-                        }
-                        
-                        pred  = (String)jComboBox2.getSelectedItem();
-                        
-                        switch(pred){     // Tem de ser letras Maiusculas!!!        
-                            case "listing":
-                                            args=1;
-                                            arg_1 = jTextField3.getText();
-                                            if(Character.isUpperCase(arg_1.charAt(0))){ok=1;}
-                                            break;
-                            case "exception":
-                                            args=1;
-                                            arg_1 = jTextField3.getText();
-                                            if(Character.isUpperCase(arg_1.charAt(0))){ok=1;}
-                                            break;               
-                            case "utente":
-                                            args=4;
-                                            arg_1 = jTextField3.getText();
-                                            arg_2 = jTextField4.getText();
-                                            arg_3 = jTextField5.getText();
-                                            arg_4 = jTextField6.getText();
-                                            if(
-                                            (Character.isUpperCase(arg_1.charAt(0))) &&
-                                            (Character.isUpperCase(arg_2.charAt(0))) &&
-                                            (Character.isUpperCase(arg_3.charAt(0))) &&
-                                            (Character.isUpperCase(arg_4.charAt(0)))                                                   
-                                            ){ok=1;}
-                                            break;               
-                            case "servico":
-                                            args=4;
-                                            arg_1 = jTextField3.getText();
-                                            arg_2 = jTextField4.getText();
-                                            arg_3 = jTextField5.getText();
-                                            arg_4 = jTextField6.getText();
-                                            if(
-                                            (Character.isUpperCase(arg_1.charAt(0))) &&
-                                            (Character.isUpperCase(arg_2.charAt(0))) &&
-                                            (Character.isUpperCase(arg_3.charAt(0))) &&
-                                            (Character.isUpperCase(arg_4.charAt(0)))                                                   
-                                            ){ok=1;}
-                                            break;
-                             case "consulta":
-                                            args=4;
-                                            arg_1 = jTextField3.getText();
-                                            arg_2 = jTextField4.getText();
-                                            arg_3 = jTextField5.getText();
-                                            arg_4 = jTextField6.getText();
-                                            if(
-                                            (Character.isUpperCase(arg_1.charAt(0))) &&
-                                            (Character.isUpperCase(arg_2.charAt(0))) &&
-                                            (Character.isUpperCase(arg_3.charAt(0))) &&
-                                            (Character.isUpperCase(arg_4.charAt(0)))                                                   
-                                            ){ok=1;}
-                                            break;                                                                     
-                        }       
-                    
-                    System.out.println(arg_1); 
-                    System.out.println(arg_2); 
-                    System.out.println(arg_3); 
-                    System.out.println(arg_4); 
-                        
-                    if(ok==0){ // Não são Variavéis
-                        System.out.println("Campos dos Argumentos mal preenchidos"); 
-                        System.out.println("Apenas é permitido letras maiúsculas");
-                        jTextArea1.append("Campos dos Argumentos mal preenchidos\n");
-                        jTextArea1.append("Apenas é permitido letras maiúsculas\n");
-                    }
-                        
-                    else if(ok==1){ // São Variavéis
-                        
-                        switch(args){
-                            case 1: 
-                                    query_tipo_normal = pred + "("
-                                        + arg_1 + ").";
-                                    break;
-                            case 2: 
-                                    query_tipo_normal = pred + "("
-                                        + arg_1 + "," + arg_2 + ").";
-                                    break;
-                            case 4: 
-                                    query_tipo_normal = pred + "("
-                                        + arg_1 + "," + arg_2 + ","
-                                        + arg_3 + "," + arg_4 + ").";
-                                    break;
-                        }                       
-                        
-                        System.out.println(query_tipo_normal);
-                        q = p.openPrologQuery(query_tipo_normal,h);
-                        jTextArea1.append("Predicado Executado => "+ query_tipo_normal +"\n");
-                        int j=1;
-                        while (q.nextSolution()) { //parsing da string resposta do hashmap
-                            int i=0;
-                            String resultado;
-                            String aux = h.toString();
-                            while(aux.charAt(i)!='{'){ i++; }
-                            i++;
-                            resultado=(aux.substring(i, aux.length()-1));
-                            jTextArea1.append("Solução #"+j+" => "+resultado +"\n");
-                            j++;
-                            }
-                        q.close();
-                    }   
-                    }catch(Exception e) {
-                            e.printStackTrace();
-                            System.out.println("Problema a Ler Ficheiro");
-                    }                          
-                    break; 
-            case 3: //query do tipo outra 
-                query_tipo_outra="";
+      switch(type){
+        case 1: //query do tipo valor de verdade
+                query_tipo_valor_verdade="";
                 jTextArea1.setText("");
-                try{
-                    p = new SICStus();
-                    if(jTextField1.getText().equals("")){
-                        p.load("exercicio2.pl");
-                    }
-                    else{
-                        p.load(jTextField1.getText());
-                    }
-                    if(!(jTextField2.getText().equals(""))){
-                        query_tipo_outra = jTextField2.getText();
-                        q = p.openPrologQuery(query_tipo_outra,h);
-                        int j=1;
-                        while (q.nextSolution()) { //parsing da string resposta do hashmap
+                HashMap hhh = new HashMap();
+                pred  = (String)jComboBox2.getSelectedItem();
+                switch(pred){   // Tem de ser letras Maiusculas!!!        
+                    case "registar":
+                                    args = 1;
+                                    arg_1 = jTextField3.getText();
+                                    if(!(arg_1.equals(""))){ok=1;}
+                                    break;
+                                    
+                    case "demo":
+                                    args = 2;
+                                    arg_1 = jTextField3.getText();
+                                    arg_2 = jTextField4.getText();
+                                    if((Character.isUpperCase(arg_2.charAt(0)))){ok=1;}
+                                    break;
+                                    
+                    case "utente":
+                                    args = 4;
+                                    arg_1 = jTextField3.getText();
+                                    arg_2 = jTextField4.getText();
+                                    arg_3 = jTextField5.getText();
+                                    arg_4 = jTextField6.getText();
+                                    if(
+                                        (!(arg_1.equals(""))) &&
+                                        (!(arg_2.equals(""))) &&
+                                        (!(arg_3.equals(""))) &&
+                                        (!(arg_4.equals("")))                                                   
+                                    ){ok=1;}
+                                    break;
+                                    
+                    case "servico":
+                                    args = 4;
+                                    arg_1 = jTextField3.getText();
+                                    arg_2 = jTextField4.getText();
+                                    arg_3 = jTextField5.getText();
+                                    arg_4 = jTextField6.getText();
+                                    if(
+                                        (!(arg_1.equals(""))) &&
+                                        (!(arg_2.equals(""))) &&
+                                        (!(arg_3.equals(""))) &&
+                                        (!(arg_4.equals("")))                                                   
+                                    ){ok=1;}
+                                    break;
+                                    
+                    case "consulta":
+                                    args = 4;
+                                    arg_1 = jTextField3.getText();
+                                    arg_2 = jTextField4.getText();
+                                    arg_3 = jTextField5.getText();
+                                    arg_4 = jTextField6.getText();
+                                    if(
+                                        (!(arg_1.equals(""))) &&
+                                        (!(arg_2.equals(""))) &&
+                                        (!(arg_3.equals(""))) &&
+                                        (!(arg_4.equals("")))                                                   
+                                    ){ok=1;}
+                                    break;                                                                 
+                }       
+                System.out.println("Argumento 1 => "+arg_1); 
+                System.out.println("Argumento 2 => "+arg_2); 
+                System.out.println("Argumento 3 => "+arg_3); 
+                System.out.println("Argumento 4 => "+arg_4); 
+                if(ok==0){ // Campos Vazios
+                    System.out.println("Campos dos Argumentos Vazios"); 
+                    jTextArea1.append("Campos dos Argumentos Vazios\n");
+                }
+                else if(ok==1){
+                    try {
+                    // Não existem campos vazios
+                    switch(args){
+                        case 1:
+                            query_tipo_valor_verdade = pred+"("+arg_1+").";
+                            break;
+                            
+                        case 2:
+                            query_tipo_valor_verdade = pred+"("+arg_1+","+arg_2+").";
+                            break;
+                            
+                        case 4:
+                            query_tipo_valor_verdade = pred+"("
+                                    +arg_1+","+arg_2+","
+                                    +arg_3+","+arg_4+").";
+                            break;
+                    }                    
+                    boolean qq = sp.query(query_tipo_valor_verdade,hhh);
+                    System.out.println(query_tipo_valor_verdade);
+                    System.out.println("Resultado => "+qq);
+                    jTextArea1.append("Predicado Executado => "+ query_tipo_valor_verdade +"\n");                       
+                    jTextArea1.append(qq+"\n");
+                }catch (SPException ex){
+                    Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("SPException caught");
+                    System.out.println("boolean qq = sp.query failed");
+                }
+                }                       
+                break;
+                
+        case 2: //query do tipo normal            
+                query_tipo_normal="";
+                jTextArea1.setText("");
+                Query qq;
+                HashMap hh = new HashMap();
+                pred  = (String)jComboBox2.getSelectedItem();                        
+                switch(pred){     // Tem de ser letras Maiusculas!!!        
+                    case "listing":
+                                    args = 1;
+                                    arg_1 = jTextField3.getText();
+                                    if(Character.isUpperCase(arg_1.charAt(0))){ok=1;}
+                                    break;
+                                    
+                    case "exception":
+                                    args = 1;
+                                    arg_1 = jTextField3.getText();
+                                    if(Character.isUpperCase(arg_1.charAt(0))){ok=1;}
+                                    break;
+                                    
+                    case "utente":
+                                    args = 4;
+                                    arg_1 = jTextField3.getText();
+                                    arg_2 = jTextField4.getText();
+                                    arg_3 = jTextField5.getText();
+                                    arg_4 = jTextField6.getText();
+                                    if(
+                                        (Character.isUpperCase(arg_1.charAt(0))) &&
+                                        (Character.isUpperCase(arg_2.charAt(0))) &&
+                                        (Character.isUpperCase(arg_3.charAt(0))) &&
+                                        (Character.isUpperCase(arg_4.charAt(0)))                                                   
+                                       ){ok=1;}
+                                    break;
+                                    
+                    case "servico":
+                                    args = 4;
+                                    arg_1 = jTextField3.getText();
+                                    arg_2 = jTextField4.getText();
+                                    arg_3 = jTextField5.getText();
+                                    arg_4 = jTextField6.getText();
+                                    if(
+                                        (Character.isUpperCase(arg_1.charAt(0))) &&
+                                        (Character.isUpperCase(arg_2.charAt(0))) &&
+                                        (Character.isUpperCase(arg_3.charAt(0))) &&
+                                        (Character.isUpperCase(arg_4.charAt(0)))                                                   
+                                    ){ok=1;}
+                                    break;
+                                    
+                    case "consulta":
+                                    args = 4;
+                                    arg_1 = jTextField3.getText();
+                                    arg_2 = jTextField4.getText();
+                                    arg_3 = jTextField5.getText();
+                                    arg_4 = jTextField6.getText();
+                                    if(
+                                        (Character.isUpperCase(arg_1.charAt(0))) &&
+                                        (Character.isUpperCase(arg_2.charAt(0))) &&
+                                        (Character.isUpperCase(arg_3.charAt(0))) &&
+                                        (Character.isUpperCase(arg_4.charAt(0)))                                                   
+                                    ){ok=1;}
+                                    break;                                                                     
+                }                           
+                System.out.println("Argumento 1 => "+arg_1); 
+                System.out.println("Argumento 2 => "+arg_2); 
+                System.out.println("Argumento 3 => "+arg_3); 
+                System.out.println("Argumento 4 => "+arg_4); 
+                if(ok==0){ // Não são Variavéis
+                    System.out.println("Campos dos Argumentos mal preenchidos"); 
+                    System.out.println("Apenas é permitido letras maiúsculas");
+                    jTextArea1.append("Campos dos Argumentos mal preenchidos\n");
+                    jTextArea1.append("Apenas é permitido letras maiúsculas\n");
+                }                        
+                else if(ok==1){ 
+                    try {
+                    // São Variavéis
+                    switch(args){
+                        case 1:
+                            query_tipo_normal = pred+"("+arg_1+").";
+                            break;
+                            
+                        case 2:
+                            query_tipo_normal = pred+"("+ arg_1+","+arg_2+").";
+                            break;
+                            
+                        case 4:
+                            query_tipo_normal = pred+"("
+                                    +arg_1+","+arg_2+","
+                                    +arg_3+","+arg_4+").";
+                            break;
+                    }                                              
+                    System.out.println(query_tipo_normal);
+                    
+                    qq = sp.openPrologQuery(query_tipo_normal,hh);
+                    jTextArea1.append("Predicado Executado => "+ query_tipo_normal +"\n");
+                    int j=1;
+                    try {
+                        while (qq.nextSolution()) { //parsing da string resposta do hashmap
                             int i=0;
                             String resultado;
-                            String aux = h.toString();
+                            String aux = hh.toString();
                             while(aux.charAt(i)!='{'){ i++; }
                             i++;
                             resultado=(aux.substring(i, aux.length()-1));
                             jTextArea1.append("Solução #"+j+" => "+resultado +"\n");
                             j++;
                         }
-                        q.close();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("InterruptedException caught");
+                        System.out.println("qq.nextSolution() failed");
+                    } catch (Exception ex) {
+                        Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("Exception caught");
+                        System.out.println("qq.nextSolution() failed");
                     }
-                    else{
-                        System.out.println("TextField Vazia -> Query Impossível");
-                        jTextArea1.append("TextField Vazia -> Query Impossível");
+                    try {
+                        qq.close();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("InterruptedException caught");
+                        System.out.println("qq.close() failed");
+                    } catch (Exception ex) {
+                        Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("Exception caught");
+                        System.out.println("qq.close() failed");
                     }
-                }catch(Exception e) {
-                    e.printStackTrace();
-                    System.out.println("Problema a Ler Ficheiro");
-                }        
-                break;        
+                    }catch (SPException ex) {
+                        Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("OpenPrologQuery failed");
+                        System.out.println("SPException caught");
+                    }
+                }   
+                break;
+          
+        case 3: //query do tipo outra 
+                query_tipo_outra="";
+                jTextArea1.setText("");  
+        try {
+            if(!(jTextField2.getText().equals(""))){           
+            query_tipo_outra=jTextField2.getText();
+            Query q;
+            HashMap h = new HashMap();
+            System.out.println(query_tipo_outra);
+            q = sp.openPrologQuery(query_tipo_outra,h);
+            jTextArea1.append("Predicado Executado => "+ query_tipo_outra +"\n");
+            int j=1;
+            
+            try {
+                while (q.nextSolution()) { //parsing da string resposta do hashmap
+                    int i=0;
+                    String resultado;
+                    String aux = h.toString();
+                    while(aux.charAt(i)!='{'){ i++; }
+                    i++;
+                    resultado=(aux.substring(i, aux.length()-1));
+                    jTextArea1.append("Solução #"+j+" => "+resultado +"\n");
+                    j++;
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("Exception caught");
+                System.out.println("q.nextSolution() failed");
+            }
+            try {
+                q.close();
+            } catch (Exception ex) {
+                Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("Exception caught");
+                System.out.println("q.close() failed");
+            }
+        }else{
+                System.out.println("TextField Vazia -> Query Impossível");
+                jTextArea1.append("TextField Vazia -> Query Impossível");
         }
-        
-        
-        
+        } catch (SPException ex) {
+            Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("OpenPrologQuery failed");
+            System.out.println("SPException caught");
+        }
+                break;
+      }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -599,12 +617,30 @@ public class Interface extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        try {  
+            this.sp = new SICStus();
+            if(jTextField1.getText().equals("")){
+                sp.load("exercicio2.pl");
+            }
+            else{
+                sp.load(jTextField1.getText());
+            }           
+        } catch (SPException ex) {
+            Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("SPException caught in main function");
+            System.out.println("Falha na Inicialização do SICStus");
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
