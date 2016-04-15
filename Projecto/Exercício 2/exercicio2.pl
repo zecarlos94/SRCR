@@ -49,6 +49,10 @@ registar(T) :- findall(I, +T :: I, L), inserir(T), testar(L).
 
 eliminar(T) :- findall(I, -T :: I, L), remover(T), testar(L).
 
+listagem(utente, S) :- findall(utente(IdU, N, I, M), utente(IdU, N, I, M), S).
+listagem(servico, S) :- findall(servico(IdS, D, I, C), servico(IdS, D, I, C), S).
+listagem(consulta, S) :- findall(consulta(D, IdU, IdS, C), consulta(D, IdU, IdS, C), S).
+
 
 % Base de conhecimento de utentes ----------------------------------------------------------------------------------------------------------------------
 
