@@ -17,6 +17,8 @@
 % soma: Lista de Valores, Soma dos Valores -> {V, F}
 % media: Lista de Valores, Média dos Valores -> {V, F}
 % filtraConsultas: Lista de Duplos (Data, Custo), Lista de Datas, Total a Pagar -> {V, F}
+% e: Resposta 1, Resposta 2, Resposta Final -> {V, F}
+% demoExtendido: Questao, Resposta -> {V, F}
 
 % exception: Predicado -> {V, F}
 % nulo: Valor -> {V, F}
@@ -89,6 +91,21 @@ filtraConsultas([], [], 0).
 filtraConsultas([(D, C) | T], [D | Rd], Tp) :- nao(nulo(C)), nao(nulo(D)), filtraConsultas(T, Rd, Tp2), Tp is C + Tp2.
 filtraConsultas([(D, C) | T], Rd, Tp) :- nulo(C), filtraConsultas(T, Rd, Tp).
 filtraConsultas([(D, C) | T], Rd, Tp) :- nulo(D), filtraConsultas(T, Rd, Tp).
+
+e(verdadeiro,verdadeiro,verdadeiro).
+e(verdadeiro,falso,falso).
+e(verdadeiro,desconhecido,desconhecido).
+
+e(falso,verdadeiro,falso).
+e(falso,falso,falso).
+e(falso,desconhecido,falso).
+
+e(desconhecido,verdadeiro,desconhecido).
+e(desconhecido,falso,falso).
+e(desconhecido,desconhecido,desconhecido).
+
+demoExtendido(Q1 e Q2, R) :- demo(Q1, R1), demoExtendido(Q2, R2), e(R1, R2 ,R).
+demoExtendido(Q1, R1) :- demo(Q1, R1).
 
 
 % Base de conhecimento de utentes ----------------------------------------------------------------------------------------------------------------------
