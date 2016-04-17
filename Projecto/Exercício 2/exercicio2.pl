@@ -41,6 +41,7 @@
 
 :- op(900, xfy, '::').
 
+:- op(900, xfy, 'e'). % é para o demoExtendido funcionar
 
 % Funções auxiliares -----------------------------------------------------------------------------------------------------------------------------------
 
@@ -60,7 +61,7 @@ remover(T) :- assert(T), !, fail.
 testar([]).
 testar([I | L]) :- I, testar(L).
 
-removeNulo(utente(IdU, N, I, M)) :- I \= xpto1, retract(utente(IdU, N, xpto1, M)). 
+removeNulo(utente(IdU, N, I, M)) :- I \= xpto1, retract(utente(IdU, N, xpto1, M)).
 removeNulo(utente(IdU, N, I, M)) :- M \= xpto2, retract(utente(IdU, N, I, xpto2)).
 removeNulo(servico(IdS, D, I, C)) :- I \= xpto3, retract(servico(IdS, D, xpto3, C)).
 removeNulo(servico(IdS, D, I, C)) :- C \= xpto4, retract(servico(IdS, D, I, xpto4)).
@@ -85,7 +86,7 @@ soma([X | T], R) :- X \= xpto1, soma(T, R2), R is X + R2.
 soma([X | T], R) :- X == xpto1, soma(T, R).
 
 media([], 0).
-media(L, R) :- soma(L, S), tamanho(L, T), R is S / T. 
+media(L, R) :- soma(L, S), tamanho(L, T), R is S / T.
 
 filtraConsultas([], [], 0).
 filtraConsultas([(D, C) | T], [D | Rd], Tp) :- nao(nulo(C)), nao(nulo(D)), filtraConsultas(T, Rd, Tp2), Tp is C + Tp2.
@@ -107,7 +108,6 @@ e(desconhecido,desconhecido,desconhecido).
 demoExtendido(Q1 e Q2, R) :- demo(Q1, R1), demoExtendido(Q2, R2), e(R1, R2 ,R).
 demoExtendido(Q1, R1) :- demo(Q1, R1).
 
-
 % Base de conhecimento de utentes ----------------------------------------------------------------------------------------------------------------------
 
 -utente(IdU, N, I, M) :- nao(utente(IdU, N, I, M)), nao(exception(utente(IdU, N, I, M))).
@@ -123,7 +123,7 @@ utente(3, joao_seabra, xpto1, rua_da_alegria).
 utente(4, tiago_barbosa, 37, xpto2).
 
 exception(utente(Id, N, I, M)) :- utente(Id, N, xpto1, M).
-exception(utente(Id, N, I, M)) :- utente(Id, N, I, xpto2). 
+exception(utente(Id, N, I, M)) :- utente(Id, N, I, xpto2).
 
 nulo(xpto1).
 nulo(xpto2).
@@ -273,5 +273,4 @@ mediaIdades(R) :- findall(I, utente(IdU, N, I, M), S), media(S, R).
 servicosInstituicao(I, R) :- findall((IdS, D), servico(IdS, D, I, C), R).
 
 % Dado um número de utente, devolve as datas de todas as consultas do mesmo e o total a pagar (desde que as datas sejam conhecidas)
-getConsultas(IdU, Lc, Tp) :- findall((D, C), consulta(D, IdU, IdS, C), S), filtraConsultas(S, Lc, Tp). 
-
+getConsultas(IdU, Lc, Tp) :- findall((D, C), consulta(D, IdU, IdS, C), S), filtraConsultas(S, Lc, Tp).
