@@ -4,6 +4,27 @@
 % servico: Id_Serviço, Descrição, Instituição, Cidade -> {V, F, D}
 % consulta: Data, Id_Utente, Id_Serviço, Custo -> {V, F, D}
 
+% nao: Predicado -> {V, F}
+% demo: Predicado, Resposta -> {V, F}
+% inserir: Predicado -> {V, F}
+% remover: Predicado -> {V, F}
+% testar: Predicado -> {V, F}
+% removeNulo: Predicado -> {V, F}
+% registar: Predicado -> {V, F}
+% eliminar: Predicado -> {V, F}
+% listagem: Predicado, Lista de Ocorrências -> {V, F}
+% tamanho: Lista de Valores, Tamanho da Lista -> {V, F}
+% soma: Lista de Valores, Soma dos Valores -> {V, F}
+% media: Lista de Valores, Média dos Valores -> {V, F}
+% filtraConsultas: Lista de Duplos (Data, Custo), Lista de Datas, Total a Pagar -> {V, F}
+
+% exception: Predicado -> {V, F}
+% nulo: Valor -> {V, F}
+
+% mediaIdades: Resultado -> {V, F}
+% servicosInstituicao: Id Instituição, Lista de Serviços -> {V, F}
+% getConsultas: Id Utente, Lista de Datas, Total a Pagar -> {V, F}
+
 
 % Definições iniciais -----------------------------------------------------------------------------------------------------------------------------
 
@@ -15,7 +36,7 @@
 :- dynamic servico/4.
 :- dynamic consulta/4.
 :- dynamic '-'/1.
-:- op(900, xfy, 'e').
+
 :- op(900, xfy, '::').
 
 
@@ -237,33 +258,3 @@ servicosInstituicao(I, R) :- findall((IdS, D), servico(IdS, D, I, C), R).
 % Dado um número de utente, devolve as datas de todas as consultas do mesmo e o total a pagar (desde que as datas sejam conhecidas)
 getConsultas(IdU, Lc, Tp) :- findall((D, C), consulta(D, IdU, IdS, C), S), filtraConsultas(S, Lc, Tp). 
 
-
-% Demo Extendido teste simples demoExtendido(cao(boby) e cao(batemene),R).
-% R = falso ? yes
-%cao(boby).
-%-cao(batemene).
-%--------------------------------------------------------------------------------------------------
-% Extensao do meta-predicado e: Resposta1,Resposta2,Resposta -> {V,F,D}
-
-e(verdadeiro,verdadeiro,verdadeiro).
-e(verdadeiro,falso,falso).
-e(verdadeiro,desconhecido,desconhecido).
-
-e(falso,verdadeiro,falso).
-e(falso,falso,falso).
-e(falso,desconhecido,falso).
-
-e(desconhecido,verdadeiro,desconhecido).
-e(desconhecido,falso,falso).
-e(desconhecido,desconhecido,desconhecido).
-
-%-------------------------------------------------------------------------------------------------------------
-% Extensao do meta-predicado demoExtendido: Questao,Resposta -> {V,F,D}
-
-demoExtendido( Questao1 e Questao2 , R ) :-
-              demo( Questao1 , R1 ) ,
-              demoExtendido( Questao2 , R2 ) ,
-              e(R1 , R2 , R).
-
-demoExtendido( Questao1 , R1 ) :-
-              demo( Questao1 , R1 ).
