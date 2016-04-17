@@ -15,7 +15,7 @@
 :- dynamic servico/4.
 :- dynamic consulta/4.
 :- dynamic '-'/1.
-
+:- op(900, xfy, 'e').
 :- op(900, xfy, '::').
 
 
@@ -53,6 +53,22 @@ listagem(utente, S) :- findall(utente(IdU, N, I, M), utente(IdU, N, I, M), S).
 listagem(servico, S) :- findall(servico(IdS, D, I, C), servico(IdS, D, I, C), S).
 listagem(consulta, S) :- findall(consulta(D, IdU, IdS, C), consulta(D, IdU, IdS, C), S).
 
+tamanho([], 0).
+tamanho([X | T], R) :- X \= xpto1, tamanho(T, R2), R is 1 + R2.
+tamanho([X | T], R) :- X == xpto1, tamanho(T, R).
+
+soma([], 0).
+soma([X | T], R) :- X \= xpto1, soma(T, R2), R is X + R2.
+soma([X | T], R) :- X == xpto1, soma(T, R).
+
+media([], 0).
+media(L, R) :- soma(L, S), tamanho(L, T), R is S / T. 
+
+filtraConsultas([], [], 0).
+filtraConsultas([(D, C) | T], [D | Rd], Tp) :- nao(nulo(C)), nao(nulo(D)), filtraConsultas(T, Rd, Tp2), Tp is C + Tp2.
+filtraConsultas([(D, C) | T], Rd, Tp) :- nulo(C), filtraConsultas(T, Rd, Tp).
+filtraConsultas([(D, C) | T], Rd, Tp) :- nulo(D), filtraConsultas(T, Rd, Tp).
+
 
 % Base de conhecimento de utentes ----------------------------------------------------------------------------------------------------------------------
 
@@ -76,6 +92,7 @@ nulo(xpto2).
 
 
 % Conhecimento imperfeito impreciso
+-utente(5, mario_cardoso, 33, rua_das_tristezas).
 exception(utente(5, mario_cardoso, 34, rua_das_tristezas)).
 exception(utente(5, mario_cardoso, 35, rua_das_tristezas)).
 
@@ -117,6 +134,7 @@ nulo(xpto4).
 exception(servico(5, cardiologia, hospital_faro, faro)).
 exception(servico(5, urologia, hospital_faro, faro)).
 
+-servico(6, psiquiatria, hospital_militar, braga).
 exception(servico(6, psiquiatria, hospital_militar, lisboa)).
 exception(servico(6, psiquiatria, hospital_militar, porto)).
 
@@ -152,6 +170,7 @@ exception(consulta(D, IdU, IdS, C)) :- consulta(D, IdU, IdS, xpto6).
 
 
 % Conhecimento imperfeito impreciso
+-consulta(22-7-2015, 5, 5, 25).
 exception(consulta(20-7-2015, 5, 5, 25)).
 exception(consulta(21-7-2015, 5, 5, 25)).
 
@@ -205,3 +224,46 @@ exception(consulta(D, 1, 4, 10)).
 % Não é permitido adicionar exceções repetidas ----------------------------------------------------------------------------------------------------
 
 +exception(Q) :: (findall(Q, exception(Q), S), length(S, T), T == 1).
+
+
+% Queries ------------------------------------------------------------------------------------------------------------------------------
+
+% Calcula a média de idades dos utentes (apenas daqueles que possuem uma informação certa sobre a idade)
+mediaIdades(R) :- findall(I, utente(IdU, N, I, M), S), media(S, R).
+
+% Devolve a lista de serviços de uma instituição
+servicosInstituicao(I, R) :- findall((IdS, D), servico(IdS, D, I, C), R).
+
+% Dado um número de utente, devolve as datas de todas as consultas do mesmo e o total a pagar (desde que as datas sejam conhecidas)
+getConsultas(IdU, Lc, Tp) :- findall((D, C), consulta(D, IdU, IdS, C), S), filtraConsultas(S, Lc, Tp). 
+
+
+% Demo Extendido teste simples demoExtendido(cao(boby) e cao(batemene),R).
+% R = falso ? yes
+%cao(boby).
+%-cao(batemene).
+%--------------------------------------------------------------------------------------------------
+% Extensao do meta-predicado e: Resposta1,Resposta2,Resposta -> {V,F,D}
+
+e(verdadeiro,verdadeiro,verdadeiro).
+e(verdadeiro,falso,falso).
+e(verdadeiro,desconhecido,desconhecido).
+
+e(falso,verdadeiro,falso).
+e(falso,falso,falso).
+e(falso,desconhecido,falso).
+
+e(desconhecido,verdadeiro,desconhecido).
+e(desconhecido,falso,falso).
+e(desconhecido,desconhecido,desconhecido).
+
+%-------------------------------------------------------------------------------------------------------------
+% Extensao do meta-predicado demoExtendido: Questao,Resposta -> {V,F,D}
+
+demoExtendido( Questao1 e Questao2 , R ) :-
+              demo( Questao1 , R1 ) ,
+              demoExtendido( Questao2 , R2 ) ,
+              e(R1 , R2 , R).
+
+demoExtendido( Questao1 , R1 ) :-
+              demo( Questao1 , R1 ).

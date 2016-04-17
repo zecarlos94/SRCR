@@ -15,7 +15,7 @@
 :- dynamic servico/4.
 :- dynamic consulta/4.
 :- dynamic '-'/1.
-
+:- op(900, xfy, 'e').
 :- op(900, xfy, '::').
 
 
@@ -237,3 +237,33 @@ servicosInstituicao(I, R) :- findall((IdS, D), servico(IdS, D, I, C), R).
 % Dado um número de utente, devolve as datas de todas as consultas do mesmo e o total a pagar (desde que as datas sejam conhecidas)
 getConsultas(IdU, Lc, Tp) :- findall((D, C), consulta(D, IdU, IdS, C), S), filtraConsultas(S, Lc, Tp). 
 
+
+% Demo Extendido teste simples demoExtendido(cao(boby) e cao(batemene),R).
+% R = falso ? yes
+%cao(boby).
+%-cao(batemene).
+%--------------------------------------------------------------------------------------------------
+% Extensao do meta-predicado e: Resposta1,Resposta2,Resposta -> {V,F,D}
+
+e(verdadeiro,verdadeiro,verdadeiro).
+e(verdadeiro,falso,falso).
+e(verdadeiro,desconhecido,desconhecido).
+
+e(falso,verdadeiro,falso).
+e(falso,falso,falso).
+e(falso,desconhecido,falso).
+
+e(desconhecido,verdadeiro,desconhecido).
+e(desconhecido,falso,falso).
+e(desconhecido,desconhecido,desconhecido).
+
+%-------------------------------------------------------------------------------------------------------------
+% Extensao do meta-predicado demoExtendido: Questao,Resposta -> {V,F,D}
+
+demoExtendido( Questao1 e Questao2 , R ) :-
+              demo( Questao1 , R1 ) ,
+              demoExtendido( Questao2 , R2 ) ,
+              e(R1 , R2 , R).
+
+demoExtendido( Questao1 , R1 ) :-
+              demo( Questao1 , R1 ).
