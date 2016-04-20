@@ -43,6 +43,7 @@
 
 :- op(900, xfy, 'e'). % é para o demoExtendido funcionar
 
+
 % Funções auxiliares -----------------------------------------------------------------------------------------------------------------------------------
 
 nao(Q) :- Q, !, fail.
@@ -231,7 +232,7 @@ exception(consulta(D, 1, 4, 10)).
 
 % Não pode inserir serviços com o mesmo id -------------------------------------------------------------------------------------------------------
 
-+servico(IdS, D, I, C) :: (findall((IdS, D2, I2, C2), utente(Id, D2, I2, C2), S), length(S, T), T == 1).
++servico(IdS, D, I, C) :: (findall((IdS, D2, I2, C2), servico(IdS, D2, I2, C2), S), length(S, T), T == 1).
 
 
 % Não pode inserir consultas do mesmo utente no mesmo serviço e na mesma data --------------------------------------------------------------------
