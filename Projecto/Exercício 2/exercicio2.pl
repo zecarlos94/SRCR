@@ -37,6 +37,7 @@
 :- dynamic utente/4.
 :- dynamic servico/4.
 :- dynamic consulta/4.
+:- dynamic nulo/1.
 :- dynamic '-'/1.
 
 :- op(900, xfy, '::').
@@ -94,17 +95,17 @@ filtraConsultas([(D, C) | T], [D | Rd], Tp) :- nao(nulo(C)), nao(nulo(D)), filtr
 filtraConsultas([(D, C) | T], Rd, Tp) :- nulo(C), filtraConsultas(T, Rd, Tp).
 filtraConsultas([(D, C) | T], Rd, Tp) :- nulo(D), filtraConsultas(T, Rd, Tp).
 
-e(verdadeiro,verdadeiro,verdadeiro).
-e(verdadeiro,falso,falso).
-e(verdadeiro,desconhecido,desconhecido).
+e(verdadeiro, verdadeiro, verdadeiro).
+e(verdadeiro, falso, falso).
+e(verdadeiro, desconhecido, desconhecido).
 
-e(falso,verdadeiro,falso).
-e(falso,falso,falso).
-e(falso,desconhecido,falso).
+e(falso, verdadeiro, falso).
+e(falso, falso, falso).
+e(falso, desconhecido, falso).
 
-e(desconhecido,verdadeiro,desconhecido).
-e(desconhecido,falso,falso).
-e(desconhecido,desconhecido,desconhecido).
+e(desconhecido, verdadeiro, desconhecido).
+e(desconhecido, falso, falso).
+e(desconhecido, desconhecido, desconhecido).
 
 demoExtendido(Q1 e Q2, R) :- demo(Q1, R1), demoExtendido(Q2, R2), e(R1, R2 ,R).
 demoExtendido(Q1, R1) :- demo(Q1, R1).
@@ -263,6 +264,11 @@ exception(consulta(D, 1, 4, 10)).
 % Não é permitido adicionar exceções repetidas ----------------------------------------------------------------------------------------------------
 
 +exception(Q) :: (findall(Q, exception(Q), S), length(S, T), T == 1).
+
+
+% Não é permitido adicionar valores nulos repetidos -----------------------------------------------------------------------------------
+
++nulo(Q) :: (findall(Q, nulo(Q), S), length(S, T), T == 1).
 
 
 % Queries ------------------------------------------------------------------------------------------------------------------------------
