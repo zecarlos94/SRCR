@@ -261,14 +261,7 @@ public class InterfaceFinal extends javax.swing.JFrame {
                                     arg_1 = jTextField3.getText();
                                     if(!(arg_1.equals(""))){ok=1;}
                                     break;
-                                    
-                    case "demo":
-                                    args = 2;
-                                    arg_1 = jTextField3.getText();
-                                    arg_2 = jTextField4.getText();
-                                    if((Character.isUpperCase(arg_2.charAt(0)))){ok=1;}
-                                    break;
-                                    
+                                                    
                     case "utente":
                                     args = 4;
                                     arg_1 = jTextField3.getText();
@@ -342,6 +335,7 @@ public class InterfaceFinal extends javax.swing.JFrame {
                     System.out.println("Resultado => "+qq);
                     jTextArea1.append("Predicado Executado => "+ query_tipo_valor_verdade +"\n");                       
                     jTextArea1.append(qq+"\n");
+                   
                 }catch (SPException ex){
                     Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
                     System.out.println("SPException caught");
@@ -368,7 +362,20 @@ public class InterfaceFinal extends javax.swing.JFrame {
                                     arg_1 = jTextField3.getText();
                                     if(Character.isUpperCase(arg_1.charAt(0))){ok=1;}
                                     break;
+                    case "demo":
+                                    args = 2;
+                                    arg_1 = jTextField3.getText();
+                                    arg_2 = jTextField4.getText();
+                                    if((Character.isUpperCase(arg_2.charAt(0)))){ok=1;}
+                                    break;
                                     
+                    case "demoExtendido":
+                                    args = 2;
+                                    arg_1 = jTextField3.getText();
+                                    arg_2 = jTextField4.getText();
+                                    if((Character.isUpperCase(arg_2.charAt(0)))){ok=3;}
+                                    break;                
+                                                    
                     case "utente":
                                     args = 4;
                                     arg_1 = jTextField3.getText();
@@ -455,7 +462,7 @@ public class InterfaceFinal extends javax.swing.JFrame {
                         else{
                             temp = (s.substring(1, s.length()-1)); 
                         }
-                        jTextArea1.append("Solução #"+i+" => "+temp+"\n");
+                        jTextArea1.append("Solução #"+i+" => "+temp+"\n");                        
                         System.out.println("Solução #"+i+" => "+temp);
                         i++;
                         
@@ -477,6 +484,66 @@ public class InterfaceFinal extends javax.swing.JFrame {
                 } catch (SPException ex) {
                         Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
                         System.out.println("listing failed");
+                    }
+                }
+                else if(ok==3){ 
+                    try {
+                    // São Variavéis
+                    switch(args){
+                        case 1:
+                            query_tipo_normal = pred+"("+arg_1+").";
+                            break;
+                            
+                        case 2:
+                            query_tipo_normal = pred+"("+ arg_1+","+arg_2+").";
+                            break;
+                            
+                        case 4:
+                            query_tipo_normal = pred+"("
+                                    +arg_1+","+arg_2+","
+                                    +arg_3+","+arg_4+").";
+                            break;
+                    }                                              
+                    System.out.println(query_tipo_normal);
+                    
+                    qq = sp.openPrologQuery(query_tipo_normal,hh);
+                    jTextArea1.append("Predicado Executado => "+ query_tipo_normal +"\n");
+                    int j=1;
+                    try {
+                        while (qq.nextSolution()) { //parsing da string resposta do hashmap
+                            int i=0;
+                            String resultado;
+                            String aux = hh.toString();
+                            while(aux.charAt(i)!='{'){ i++; }
+                            i++;
+                            resultado=(aux.substring(i, aux.length()-1));
+                            if(j==1) jTextArea1.append("Solução #"+j+" => "+resultado +"\n");
+                            j++;
+                        }
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("InterruptedException caught");
+                        System.out.println("qq.nextSolution() failed");
+                    } catch (Exception ex) {
+                        Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("Exception caught");
+                        System.out.println("qq.nextSolution() failed");
+                    }
+                    try {
+                        qq.close();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("InterruptedException caught");
+                        System.out.println("qq.close() failed");
+                    } catch (Exception ex) {
+                        Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("Exception caught");
+                        System.out.println("qq.close() failed");
+                    }
+                    }catch (SPException ex) {
+                        Logger.getLogger(InterfaceFinal.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("OpenPrologQuery failed");
+                        System.out.println("SPException caught");
                     }
                 }
                 else if(ok==1){ 
@@ -599,8 +666,7 @@ public class InterfaceFinal extends javax.swing.JFrame {
                            jComboBox2.addItem("registar");                           
                            jComboBox2.addItem("utente");
                            jComboBox2.addItem("servico");
-                           jComboBox2.addItem("consulta");
-                           jComboBox2.addItem("demo");
+                           jComboBox2.addItem("consulta");                           
                            type=1;
                            jTextArea1.setText("");
                            jLabel3.setText("");
@@ -613,7 +679,9 @@ public class InterfaceFinal extends javax.swing.JFrame {
                            break;
                            
             case "Normal":
-                           jComboBox2.removeAllItems();                         
+                           jComboBox2.removeAllItems(); 
+                           jComboBox2.addItem("demo");
+                           jComboBox2.addItem("demoExtendido");
                            jComboBox2.addItem("utente");
                            jComboBox2.addItem("servico");
                            jComboBox2.addItem("consulta"); 
@@ -671,7 +739,10 @@ public class InterfaceFinal extends javax.swing.JFrame {
                             break;                              
             case "demo":
                            jLabel4.setText("Introduza os 2 argumentos do predicado que acabou de escolher por ordem");
-                           break;            
+                           break;  
+            case "demoExtendido":
+                           jLabel4.setText("Introduza os 2 argumentos do predicado que acabou de escolher por ordem");
+                           break;                  
         }                   
       }
         
