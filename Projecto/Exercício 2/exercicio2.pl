@@ -38,6 +38,7 @@
 :- dynamic servico/4.
 :- dynamic consulta/4.
 :- dynamic nulo/1.
+:- dynamic exception/1.
 :- dynamic '-'/1.
 
 :- op(900, xfy, '::').
